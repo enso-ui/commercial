@@ -3,7 +3,7 @@
         <div class="columns is-centered">
             <div class="column is-4-desktop">
                 <suppliers class="select-wrapper box raises-on-hover"
-                           :params="params"/>
+                    :params="params"/>
             </div>
         </div>
         <div class="columns is-centered">
