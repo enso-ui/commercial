@@ -9,7 +9,8 @@
 Commercial operations front-end
 
 ## Usage
-The component can be used outside of the Enso ecosystem.
+
+The component cannot be used outside of the Enso ecosystem.
 
 ### Demo
 
@@ -32,4 +33,4 @@ Thank you to all the people who already contributed to Enso!
 
 ## License
 
-[ISC](https://opensource.org/licenses/ISC)
+[CC-BY-NC-ND-4.0](https://spdx.org/licenses/CC-BY-NC-ND-4.0.html)
