@@ -43,7 +43,7 @@
 import { Accessories, Documents, Comments } from '@enso-ui/accessories/bulma';
 import { Tab } from '@enso-ui/bulma';
 import { EnsoForm } from '@enso-ui/forms/bulma';
-import PositionsManager from '@commercial/inventory/PositionsManager.vue';
+import PositionsManager from '@enso-ui/commercial/src/bulma/components/inventory/PositionsManager.vue';
 
 export default {
     name: 'Edit',

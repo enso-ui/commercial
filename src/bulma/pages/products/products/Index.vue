@@ -46,8 +46,8 @@ import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import {
     Modal, EnsoTable, EnsoDateFilter,
 } from '@enso-ui/bulma';
-import PositionsManager from '@commercial/inventory/PositionsManager.vue'; //TODO cu alias sau cale relativa??
-import FilterState from '@commercial-pages/components/FilterState';
+import PositionsManager from '@enso-ui/commercial/src/bulma/components/inventory/PositionsManager.vue';
+import FilterState from '@enso-ui/commercial/src/bulma/pages/components/FilterState';
 import Suppliers from './components/Suppliers.vue';
 
 library.add(faBoxOpen);
