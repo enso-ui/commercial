@@ -56,7 +56,7 @@
 <script>
 import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/bulma';
 import { EnsoTable } from '@enso-ui/tables/bulma';
-import FilterState from '../components/FilterState';
+import { FilterState } from '@enso-ui/filters/bulma';
 
 export default {
     name: 'Index',

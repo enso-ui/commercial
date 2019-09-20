@@ -34,6 +34,7 @@
     "@enso-ui/inventory": "~1.0.0",
     "@enso-ui/forms": "~1.2.0",
     "@enso-ui/tables": "~1.1.0",
+    "@enso-ui/filters": "~1.1.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.2",
     "@fortawesome/free-brands-svg-icons": "^5.2.0",
     "vue": "^2.5.16"
