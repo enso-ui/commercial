@@ -102,6 +102,7 @@
                     <button class="button is-naked"
                         v-tooltip="i18n('Download invoice (long click for cancel)')"
                         v-long-click:1500="cancelInvoice"
+                        key="invoice"
                         @click="downloadInvoice"
                         v-if="hasInvoice() || hasProforma()">
                         <span class="icon has-text-info">
