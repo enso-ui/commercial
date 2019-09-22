@@ -157,10 +157,10 @@ export default {
         }
 
         .lines-move {
-            transition: item transform 0.333s;
+            transition: transform 0.333s;
         }
 
-        .lines-enter, .items-leave-to {
+        .lines-enter, .lines-leave-to {
             opacity: 0;
         }
     }
