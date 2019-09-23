@@ -1,14 +1,14 @@
 import routeImporter from '@core-modules/importers/routeImporter';
 
-const routes = routeImporter(require.context('./stocks', false, /.*\.js$/));
+const routes = routeImporter(require.context('./audit', false, /.*\.js$/));
 const RouterView = () => import('@core-pages/Router.vue');
 
 export default {
-    path: 'stocks',
+    path: 'audit',
     component: RouterView,
     meta: {
-        breadcrumb: 'client stocks',
-        route: 'commercial.stocks.index',
+        breadcrumb: 'audit',
+        route: 'commercial.audit.index',
     },
     children: routes,
 };
