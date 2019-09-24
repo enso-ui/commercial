@@ -1,5 +1,11 @@
 <template>
     <div class="wrapper">
+        <a class="button quick-view-control is-pulled-right"
+            @click="quickView = true">
+            <span class="icon is-large">
+                <fa icon="ellipsis-h"/>
+            </span>
+        </a>
         <enso-form disable-state
             @ready="order.form = $event.form"
             @error="order.form.fetch()"
@@ -10,15 +16,9 @@
                 <form-content/>
             </template>
         </enso-form>
-        <div class="button qview-control"
-            @click="qView = true">
-            <span class="icon is-large">
-                <fa icon="ellipsis-h"/>
-            </span>
-        </div>
         <quick-view
-            @close="qView = false"
-            v-if="qView">
+            @close="quickView = false"
+            v-if="quickView">
             <p class="title is-5">{{i18n('Accessories')}}</p>
             <accessories class="has-margin-top-medium">
                 <template slot-scope="{ count }">
@@ -85,7 +85,7 @@ export default {
     inject: ['errorHandler', 'i18n', 'route', 'order'],
 
     data: () => ({
-        qView: false,
+        quickView: false,
     }),
 
     computed: {
@@ -244,11 +244,15 @@ export default {
 
 
 <style lang="scss">
-    .qview-control {
-        z-index: 3;
-        position: fixed;
-        top: 9.5em;
-        right: 1.5em;
+    .wrapper {
+        position: relative;
+
+        .quick-view-control {
+            z-index: 3;
+            position: absolute;
+            top: .3em;
+            right: .3em;
+        }
     }
 
 </style>
