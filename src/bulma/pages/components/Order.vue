@@ -60,7 +60,7 @@ import {
 } from '@enso-ui/accessories/bulma';
 import { Tab } from '@enso-ui/bulma'
 import { EnsoForm } from '@enso-ui/bulma';
-import format from '@core-modules/plugins/date-fns/format';
+import format from '@enso-ui/ui/src/modules/plugins/date-fns/format';
 import FormContent from './FormContent.vue';
 import Lines from './Lines.vue';
 import DeleteModal from './DeleteModal.vue';
