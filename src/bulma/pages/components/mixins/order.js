@@ -1,5 +1,3 @@
-import { mapState } from 'vuex';
-
 export default {
     data: () => ({
         order: {
@@ -16,7 +14,6 @@ export default {
     }),
 
     computed: {
-        //...mapState(['enums']), //TODO okay?
         enums() {
             return this.$store.state.enums;
         },

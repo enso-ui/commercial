@@ -6,7 +6,7 @@
             disable-state
             :path="route('commercial.sales.payments.create')"
             v-on="$listeners"
-            @ready="$refs.form.field('version').value = order.form.field('version').value"
+            @ready="$refs.form.field('version').value = order.form.field('version').value; ready = true;"
             :params="params"
             ref="form">
             <template v-slot:type="{ field }">
@@ -20,6 +20,7 @@
 <script>
 import { mapState } from 'vuex';
 import { Modal, EnsoForm, FormField } from '@enso-ui/bulma';
+import clientPayment from '@enso-ui/financials/src/bulma/pages/financials/clients/mixins/clientPayment';
 
 export default {
     name: 'PaymentConfigurator',
@@ -27,6 +28,8 @@ export default {
     inject: ['i18n', 'route', 'order'],
 
     components: { Modal, EnsoForm, FormField },
+
+    mixins: [clientPayment],
 
     data: () => ({
         attributes: ['date', 'number', 'serial', 'due_date'],
@@ -40,23 +43,12 @@ export default {
     },
 
     methods: {
-        update(type) {
-            if (`${type}` !== this.enums.paymentTypes.Receipt) {
-                this.enableInputs();
-                return;
-            }
-
-            this.disableInputs();
-        },
-        enableInputs() {
-            this.attributes.forEach(attribute => (this.$refs.form
-                .field(attribute).meta.hidden = false));
-        },
-        disableInputs() {
-            this.attributes.forEach((attribute) => {
-                this.$refs.form.field(attribute).value = null;
-                this.$refs.form.field(attribute).meta.hidden = true;
-            });
+        update() {
+            this.updateIsCollected();
+            this.readonlyAndClear('serial', this.usesAutoSerial || this.hasNoSerial)
+                .readonlyAndClear('number', `${this.type}` === this.enums.paymentTypes.Receipt)
+                .readonly('date', this.isImmediatelyCollected)
+                .readonlyAndClear('due_date', this.isImmediatelyCollected);
         },
     },
 };
@@ -65,11 +57,12 @@ export default {
 <style lang="scss">
     .payment-modal {
         .modal {
-            overflow: visible;
-
             .modal-content {
                 width: 350px;
                 overflow: scroll;
+                .box {
+                    min-height: 400px;
+                }
             }
         }
     }

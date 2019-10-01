@@ -44,6 +44,13 @@
                     :title="i18n('Emag')"
                     v-model="params.emag"/>
             </div>
+            <div class="column is-4-desktop is-3-widescreen">
+                <enso-select-filter class="box raises-on-hover"
+                    source="administration.users.options"
+                    label="person.name"
+                    :title="i18n('User')"
+                    v-model="filters.sales.created_by"/>
+            </div>
         </div>
         <filter-state :api-version="apiVersion"
             name="sale_filters"
@@ -91,6 +98,7 @@ export default {
                 sales: {
                     person_id: null,
                     company_id: null,
+                    created_by: null,
                 },
             },
             intervals: {

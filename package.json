@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@enso-ui/inventory": "~1.0.0",
+    "@enso-ui/financials": "~1.0.6",
     "@enso-ui/forms": "~1.2.0",
     "@enso-ui/tables": "~1.1.0",
     "@enso-ui/filters": "~1.1.2",
