@@ -1,12 +1,14 @@
 <template>
     <div>
-        <div class="columns is-centered">
+        <div class="columns is-centered"
+            v-if="ready">
             <div class="column is-4-desktop">
                 <suppliers class="select-wrapper box raises-on-hover"
                     :params="params"/>
             </div>
         </div>
-        <div class="columns is-centered">
+        <div class="columns is-centered"
+            v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     :title="i18n('Updated')"
@@ -23,6 +25,7 @@
             :filters="filters"
             :intervals="intervals"
             :params="params"
+            @ready="ready = true"
             ref="filterState"/>
         <enso-table class="box is-paddingless raises-on-hover"
             ref="stocks"
@@ -68,6 +71,7 @@ export default {
     data() {
         return {
             apiVersion: 1,
+            ready: false,
             productId: null,
             filters: {
                 products: {

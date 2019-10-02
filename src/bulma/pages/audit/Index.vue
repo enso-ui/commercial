@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="columns is-multiline is-centered">
+        <div class="columns is-multiline is-centered"
+            v-if="ready">
             <div class="column is-5">
                 <client-filter :params="params"
                     :filters="filters.client_stocks"/>
@@ -23,6 +24,7 @@
             name="stocks_filters"
             :params="params"
             :filters="filters"
+            @ready="ready = true"
             ref="filterState"/>
         <div class="has-margin-bottom-large" v-if="params.client !== 'person'">
             <p class="title is-5 has-text-centered">
@@ -41,7 +43,8 @@
                 v-if="stockFilters.client_stocks.client_id"
                 ref="uploader"/>
         </div>
-        <div class="columns is-centered has-margin-top-large">
+        <div class="columns is-centered has-margin-top-large"
+            v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     :title="i18n('Date')"
@@ -98,7 +101,8 @@
             </div>
         </div>
 
-        <div class="columns is-centered">
+        <div class="columns is-centered"
+            v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     :title="i18n('Date')"
@@ -180,6 +184,7 @@ export default {
     data() {
         return {
             apiVersion: 2,
+            ready: false,
             filters: {
                 client_stocks: {
                     supplier_id: null,

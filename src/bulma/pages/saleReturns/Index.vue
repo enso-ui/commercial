@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="columns is-multiline is-centered">
+        <div class="columns is-multiline is-centered"
+            v-if="ready">
             <div class="column is-5">
                 <client-filter :params="params"
                     :filters="filters.sale_returns"/>
@@ -39,6 +40,7 @@
             :filters="filters"
             :intervals="intervals"
             :params="params"
+            @ready="ready = true"
             ref="filterState"/>
 
         <enso-table class="box is-paddingless raises-on-hover"
@@ -77,6 +79,7 @@ export default {
     data() {
         return {
             apiVersion: 1,
+            ready: false,
             filters: {
                 sale_returns: {
                     is_finalized: null,

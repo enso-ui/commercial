@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="columns is-centered is-multiline">
+        <div class="columns is-centered is-multiline"
+            v-if="ready">
             <div class="column is-4">
                 <enso-select-filter class="box raises-on-hover"
                     source="administration.companies.options"
@@ -41,6 +42,7 @@
             :filters="filters"
             :intervals="intervals"
             :params="params"
+            @ready="ready = true"
             ref="filterState"/>
 
         <enso-table class="box is-paddingless raises-on-hover"
@@ -70,6 +72,7 @@ export default {
     data() {
         return {
             apiVersion: 1,
+            ready: false,
             filters: {
                 purchase_returns: {
                     supplier_id: null,

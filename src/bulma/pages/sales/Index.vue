@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="columns is-multiline is-centered">
+        <div class="columns is-multiline is-centered"
+            v-if="ready">
             <div class="column is-5">
                 <client-filter :params="params"
                     :filters="filters.sales"/>
@@ -16,7 +17,8 @@
                     "/>
             </div>
         </div>
-        <div class="columns is-multiline is-mobile is-centered">
+        <div class="columns is-multiline is-mobile is-centered"
+            v-if="ready">
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
@@ -57,6 +59,7 @@
             :filters="filters"
             :intervals="intervals"
             :params="params"
+            @ready="ready = true"
             ref="filterState"/>
 
         <enso-table class="box is-paddingless raises-on-hover"
@@ -94,6 +97,7 @@ export default {
     data() {
         return {
             apiVersion: 1,
+            ready: false,
             filters: {
                 sales: {
                     person_id: null,
