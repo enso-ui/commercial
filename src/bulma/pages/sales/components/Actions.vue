@@ -149,10 +149,19 @@
                     <button class="button is-naked"
                         v-tooltip="i18n('Download sale offer')"
                         :disabled="processing()"
-                        @click="downloadOffer"
+                        @click="downloadOffer('pdf')"
                         v-if="allOrdered()">
                         <span class="icon has-text-info">
                             <fa icon="file-pdf"/>
+                        </span>
+                    </button>
+                    <button class="button is-naked"
+                        v-tooltip="i18n('Download excel sale offer')"
+                        :disabled="processing()"
+                        @click="downloadOffer('xlsx')"
+                        v-if="allOrdered()">
+                        <span class="icon has-text-info">
+                            <fa icon="file-spreadsheet"/>
                         </span>
                     </button>
                     <button class="button is-naked"
@@ -181,13 +190,13 @@ import {
     faUpload, faDownload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen, faClipboardList,
     faHandHoldingUsd, faFileInvoice, faFileInvoiceDollar, faFilePdf, faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
-import { faBallotCheck, faInventory, faEnvelopeOpenDollar } from '@fortawesome/pro-solid-svg-icons';
+import { faBallotCheck, faInventory, faEnvelopeOpenDollar, faFileSpreadsheet } from '@fortawesome/pro-solid-svg-icons';
 import { longClick } from '@enso-ui/directives';
 
 library.add([
     faUpload, faDownload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen, faClipboardList,
     faHandHoldingUsd, faFileInvoice, faFileInvoiceDollar, faFilePdf, faEnvelope,
-    faBallotCheck, faInventory, faEnvelopeOpenDollar,
+    faBallotCheck, faInventory, faEnvelopeOpenDollar, faFileSpreadsheet,
 ]);
 
 export default {

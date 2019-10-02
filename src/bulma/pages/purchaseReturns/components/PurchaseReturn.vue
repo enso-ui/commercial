@@ -23,8 +23,9 @@ export default {
         downloadStockRemoval() {
             window.open(this.route(`commercial.${this.type}s.stockRemoval`, this.$route.params), '_blank');
         },
-        downloadOrder() {
-            window.open(this.route(`commercial.${this.type}s.order`, this.$route.params), '_blank');
+        downloadOrder(format = 'pdf') {
+            const uri = this.route(`commercial.${this.type}s.order`, this.$route.params) + `?format=${format}`;
+            window.open(uri, '_blank');
         },
     },
 

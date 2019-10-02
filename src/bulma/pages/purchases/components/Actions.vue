@@ -86,10 +86,19 @@
                     <button class="button is-naked"
                         v-tooltip="i18n('Download purchase order')"
                         :disabled="processing()"
-                        @click="downloadOrder"
+                        @click="downloadOrder('pdf')"
                         v-if="allOrdered()">
                         <span class="icon has-text-info">
                             <fa icon="file-pdf"/>
+                        </span>
+                    </button>
+                    <button class="button is-naked"
+                        v-tooltip="i18n('Download excel purchase order')"
+                        :disabled="processing()"
+                        @click="downloadOrder('xlsx')"
+                        v-if="allOrdered()">
+                        <span class="icon has-text-info">
+                            <fa icon="file-spreadsheet"/>
                         </span>
                     </button>
                     <button class="button is-naked"
@@ -118,11 +127,11 @@ import {
     faDownload, faUpload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen,
     faFilePdf, faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
-import { faPalletAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faPalletAlt, faFileSpreadsheet } from '@fortawesome/pro-solid-svg-icons';
 
 library.add([
     faDownload, faUpload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen,
-    faFilePdf, faEnvelope, faPalletAlt,
+    faFilePdf, faEnvelope, faPalletAlt, faFileSpreadsheet,
 ]);
 
 export default {

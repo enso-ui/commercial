@@ -163,8 +163,9 @@ export default {
                 window.open(this.route('financials.clients.payments.pdf', this.paymentId), '_blank');
             }
         },
-        downloadOffer() {
-            window.open(this.route('commercial.sales.offer', this.$route.params), '_blank');
+        downloadOffer(format = 'pdf') {
+            const uri = this.route(`commercial.${this.type}s.offer`, this.$route.params) + `?format=${format}`;
+            window.open(uri, '_blank');
         },
         hasProforma() {
             return this.form

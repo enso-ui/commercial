@@ -22,9 +22,10 @@
                                 :field="form.field('number')"/>
                         </div>
                         <div class="column is-narrow">
-                            <form-field v-bind="$attrs"
-                                :field="form.field('supplier_number')"
-                                v-if="[enums.orders.Purchase, enums.orders.PurchaseReturn].includes(form.param('type'))"/>
+                            <form-field :field="form.field('supplier_number')"
+                                v-bind="$attrs"
+                                v-if="[enums.orders.Purchase, enums.orders.PurchaseReturn]
+                                    .includes(form.param('type'))"/>
                         </div>
                     </div>
                 </div>
@@ -71,7 +72,14 @@ export default {
 </script>
 
 <style lang="scss">
-    .order-form .field > .control > .input {
-        width: 10.5em;
+    .order-form {
+        .button {
+            padding-left: 0.6em;
+            padding-right: 0.6em;
+        }
+
+        .field > .control > .input {
+            width: 10.5em;
+        }
     }
 </style>

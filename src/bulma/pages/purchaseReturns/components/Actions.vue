@@ -96,10 +96,19 @@
                     <button class="button is-naked"
                         v-tooltip="i18n('Download purchase return order')"
                         :disabled="processing()"
-                        @click="downloadOrder"
+                        @click="downloadOrder('pdf')"
                         v-if="allOrdered()">
                         <span class="icon has-text-info">
                             <fa icon="file-pdf"/>
+                        </span>
+                    </button>
+                    <button class="button is-naked"
+                        v-tooltip="i18n('Download excel purchase return order')"
+                        :disabled="processing()"
+                        @click="downloadOrder('xlsx')"
+                        v-if="allOrdered()">
+                        <span class="icon has-text-info">
+                            <fa icon="file-spreadsheet"/>
                         </span>
                     </button>
                     <button class="button is-naked"
@@ -128,12 +137,12 @@ import {
     faUpload, faDownload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen,
     faClipboardList, faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
-import { faInventory } from '@fortawesome/pro-solid-svg-icons';
+import { faInventory, faFileSpreadsheet } from '@fortawesome/pro-solid-svg-icons';
 import { longClick } from '@enso-ui/directives';
 
 library.add([
     faUpload, faDownload, faWarehouse, faBoxOpen, faTrashAlt, faLock, faLockOpen,
-    faClipboardList, faFilePdf, faInventory,
+    faClipboardList, faFilePdf, faInventory, faFileSpreadsheet,
 ]);
 
 export default {

@@ -91,10 +91,11 @@ export default {
             });
         },
         downloadGrn() {
-            window.open(this.route('commercial.saleReturns.grn', this.$route.params), '_blank');
+            window.open(this.route(`commercial.${this.type}s.grn`, this.$route.params), '_blank');
         },
-        downloadOffer() {
-            window.open(this.route('commercial.saleReturns.offer', this.$route.params), '_blank');
+        downloadOffer(format = 'pdf') {
+            const uri = this.route(`commercial.${this.type}s.offer`, this.$route.params) + `?format=${format}`;
+            window.open(uri, '_blank');
         },
         downloadInvoice() {
             window.open(this.route('financials.clients.invoices.pdf', this.invoiceId), '_blank');

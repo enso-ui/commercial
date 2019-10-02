@@ -18,10 +18,11 @@ export default {
 
     methods: {
         downloadGrn() {
-            window.open(this.route('commercial.purchases.grn', this.$route.params), '_blank');
+            window.open(this.route(`commercial.${this.type}s.grn`, this.$route.params), '_blank');
         },
-        downloadOrder() {
-            window.open(this.route('commercial.purchases.order', this.$route.params), '_blank');
+        downloadOrder(format = 'pdf') {
+            const uri = this.route(`commercial.${this.type}s.order`, this.$route.params) + `?format=${format}`;
+            window.open(uri, '_blank');
         },
     },
 
