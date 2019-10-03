@@ -47,9 +47,10 @@
             v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
-                    :title="i18n('Date')"
-                    default="thirtyDays"
                     v-model="saleDateParams.dateInterval"
+                    default="thirtyDays"
+                    :title="i18n('Date')"
+                    :interval="saleIntervals.sales.date"
                     @update="
                         saleIntervals.sales.date.min = $event.min;
                         saleIntervals.sales.date.max = $event.max;
@@ -105,9 +106,10 @@
             v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
-                    :title="i18n('Date')"
-                    default="thirtyDays"
                     v-model="purchaseDateParams.dateInterval"
+                    default="thirtyDays"
+                    :title="i18n('Date')"
+                    :interval="purchaseIntervals.purchases.date"
                     @update="
                         purchaseIntervals.purchases.date.min = $event.min;
                         purchaseIntervals.purchases.date.max = $event.max;

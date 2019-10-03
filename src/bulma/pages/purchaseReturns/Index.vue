@@ -10,13 +10,10 @@
             </div>
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
-                    :title="i18n('Date')"
-                    default="thirtyDays"
                     v-model="params.dateInterval"
-                    @update="
-                        intervals.purchase_returns.date.min = $event.min;
-                        intervals.purchase_returns.date.max = $event.max;
-                    "/>
+                    default="thirtyDays"
+                    :title="i18n('Date')"
+                    :interval="intervals.purchase_returns.date"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"

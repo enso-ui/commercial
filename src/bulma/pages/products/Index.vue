@@ -11,13 +11,10 @@
             v-if="ready">
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
-                    :title="i18n('Updated')"
-                    default="thirtyDays"
                     v-model="params.dateInterval"
-                    @update="
-                        intervals.products.updated_at.min = $event.min;
-                        intervals.products.updated_at.max = $event.max;
-                    "/>
+                    default="thirtyDays"
+                    :title="i18n('Updated')"
+                    :interval="intervals.products.updated_at"/>
             </div>
         </div>
         <filter-state :api-version="apiVersion"
