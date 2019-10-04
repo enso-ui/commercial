@@ -31,11 +31,12 @@
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {
-    "@enso-ui/inventory": "~1.0.0",
-    "@enso-ui/financials": "~1.0.6",
-    "@enso-ui/forms": "~1.2.0",
-    "@enso-ui/tables": "~1.1.0",
-    "@enso-ui/filters": "~1.1.2",
+    "@enso-ui/card": "1.0.x",
+    "@enso-ui/filters": "1.1.x",
+    "@enso-ui/financials": "1.0.x",
+    "@enso-ui/forms": "1.2.x",
+    "@enso-ui/inventory": "1.0.x",
+    "@enso-ui/tables": "1.1.x",
     "@fortawesome/fontawesome-svg-core": "^1.2.2",
     "@fortawesome/free-brands-svg-icons": "^5.2.0",
     "vue": "^2.5.16"

@@ -42,12 +42,11 @@
 </template>
 
 <script>
-
 import { library } from '@fortawesome/fontawesome-svg-core/index.js';
 import { faBoxOpen, faCogs } from '@fortawesome/free-solid-svg-icons/index.js';
 import {
     Card, CardHeader, CardRefresh, CardCollapse, CardBadge, CardContent, CardControl,
-} from '@enso-ui/bulma';
+} from '@enso-ui/card/bulma';
 
 import Lines from './Lines.vue';
 

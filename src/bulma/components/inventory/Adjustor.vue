@@ -54,7 +54,6 @@
 
 import { library } from '@fortawesome/fontawesome-svg-core/index.js';
 import { faSync, faBan, faCheck } from '@fortawesome/free-solid-svg-icons/index.js';
-
 import { selectOnFocus } from '@enso-ui/directives';
 import Errors from '@enso-ui/forms/src/classes/Errors';
 
