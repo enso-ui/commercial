@@ -26,7 +26,7 @@
             <enso-table class="box is-paddingless raises-on-hover"
                 id="stocks"
                 :path="route('commercial.audit.stocks.initTable')"
-                :filters="stockFilters"
+                :filters="filters"
                 @import="openUploader"
                 @reset="$refs.filterState.reset()"/>
             <import-uploader v-show="false"
