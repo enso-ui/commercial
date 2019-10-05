@@ -35,7 +35,7 @@
 
 <script>
 import { VPopover } from 'v-tooltip';
-import { Loader } from '@enso-ui/bulma';
+import Loader from '@enso-ui/loader/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHandPaper, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
