@@ -102,7 +102,7 @@
             </div>
         </div>
         <filter-state :api-version="apiVersion"
-            name="intervals"
+            name="audits"
             :params="params"
             :filters="filters"
             :intervals="intervals"
@@ -133,7 +133,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.3,
+            apiVersion: 1.4,
             ready: false,
             filters: {
                 client_stocks: {
