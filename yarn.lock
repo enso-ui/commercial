@@ -798,7 +798,7 @@
     v-tooltip "^2.0.0-rc.32"
     vue "^2.5.16"
 
-"@enso-ui/data-import@^1.0.2":
+"@enso-ui/data-import@^1.0.2", "@enso-ui/data-import@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@enso-ui/data-import/-/data-import-1.0.3.tgz#ca549699c18395de298be1bd5ee934487e8f24e6"
   integrity sha512-FqPAmmQd3m++6WVfx5rKAVez3RrCDZ8OrOLzQ/ZA9X7Mw0mbJopRcoUbhlixndo3kLgo6PUnPnB6toN1J8MZpw==
@@ -1346,7 +1346,7 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.25"
 
-"@fortawesome/free-solid-svg-icons@^5.2.0":
+"@fortawesome/free-solid-svg-icons@^5.11.2", "@fortawesome/free-solid-svg-icons@^5.2.0":
   version "5.11.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.11.2.tgz#2f2f1459743a27902b76655a0d0bc5ec4d945631"
   integrity sha512-zBue4i0PAZJUXOmLBBvM7L0O7wmsDC8dFv9IhpW5QL4kT9xhhVUsYg/LX1+5KaukWq4/cbDcKT+RT1aRe543sg==
