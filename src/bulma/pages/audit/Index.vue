@@ -114,7 +114,7 @@
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/bulma';
+import { EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { EnsoTable } from '@enso-ui/tables/bulma';
 import ImportUploader from '@enso-ui/data-import/src/bulma/pages/dataImport/components/ImportUploader.vue';
 import ClientFilter from '@enso-ui/financials/src/bulma/pages/financials/clients/components/ClientFilter.vue';

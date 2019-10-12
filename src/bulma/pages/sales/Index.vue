@@ -72,9 +72,7 @@
 
 <script>
 import { EnsoTable } from '@enso-ui/tables/bulma';
-import {
-    BooleanFilter, EnsoDateFilter, EnsoSelectFilter,
-} from '@enso-ui/bulma';
+import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import ClientFilter from '@enso-ui/financials/src/bulma/pages/financials/clients/components/ClientFilter.vue';

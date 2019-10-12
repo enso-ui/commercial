@@ -52,13 +52,10 @@
 </template>
 
 <script>
-import {
-    BooleanFilter, EnsoDateFilter, EnsoSelectFilter,
-} from '@enso-ui/bulma';
-import { EnsoTable } from '@enso-ui/tables/bulma';
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
+import { EnsoTable } from '@enso-ui/tables/bulma';
 import ClientFilter from '@enso-ui/financials/src/bulma/pages/financials/clients/components/ClientFilter.vue';
 import { FilterState } from '@enso-ui/filters/renderless';
 

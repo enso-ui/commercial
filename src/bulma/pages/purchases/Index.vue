@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/bulma';
+import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { EnsoTable } from '@enso-ui/tables/bulma';
 import { FilterState } from '@enso-ui/filters/renderless';
 

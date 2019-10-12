@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { Modal } from '@enso-ui/bulma';
+import { Modal } from '@enso-ui/modal/bulma';
 
 export default {
     name: 'CancelInvoice',

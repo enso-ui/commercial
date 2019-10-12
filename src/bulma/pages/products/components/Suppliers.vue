@@ -18,7 +18,8 @@
 
 <script>
 import { VTooltip } from 'v-tooltip';
-import { EnsoSelect, VueSwitch } from '@enso-ui/bulma';
+import { EnsoSelect } from '@enso-ui/select/bulma';
+import VueSwitch from '@enso-ui/switch/bulma';
 import CoreSelectFilter from '@enso-ui/filters/src/bulma/CoreSelectFilter.vue';
 
 export default {

@@ -43,11 +43,11 @@
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
-import {
-    Modal, EnsoTable, EnsoDateFilter,
-} from '@enso-ui/bulma';
-import PositionsManager from '@enso-ui/commercial/src/bulma/components/inventory/PositionsManager.vue';
-import FilterState from '@enso-ui/commercial/src/bulma/pages/components/FilterState';
+import { Modal } from '@enso-ui/modal/bulma';
+import { EnsoTable } from '@enso-ui/tables/bulma';
+import { EnsoDateFilter } from '@enso-ui/filters/bulma';
+import { FilterState } from '@enso-ui/filters/renderless';
+import PositionsManager from '../../components/inventory/PositionsManager.vue';
 import Suppliers from './components/Suppliers.vue';
 
 library.add(faBoxOpen);

@@ -39,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { FormField } from '@enso-ui/bulma';
+import { FormField } from '@enso-ui/forms/bulma';
 import Partners from './Partners.vue';
 import Actions from './Actions.vue';
 

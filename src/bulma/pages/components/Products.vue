@@ -63,7 +63,8 @@
 <script>
 import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
-import { EnsoSelect, VueSwitch } from '@enso-ui/bulma';
+import { EnsoSelect } from '@enso-ui/select/bulma';
+import VueSwitch from '@enso-ui/switch/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faDollarSign, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 import { faInventory } from '@fortawesome/pro-solid-svg-icons';

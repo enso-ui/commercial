@@ -19,7 +19,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { Modal, EnsoForm, FormField } from '@enso-ui/bulma';
+import { Modal } from '@enso-ui/modal/bulma';
+import { EnsoForm, FormField } from '@enso-ui/forms/bulma';
 import clientPayment from '@enso-ui/financials/src/bulma/pages/financials/clients/mixins/clientPayment';
 
 export default {
