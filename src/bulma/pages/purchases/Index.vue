@@ -84,7 +84,7 @@ export default {
                     date: {
                         min: null,
                         max: null,
-                        dbDateFormat: 'Y-m-d',
+                        dateFormat: null,
                     },
                 },
             },
