@@ -10,24 +10,24 @@
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
                     default="thirtyDays"
-                    :title="i18n('Date')"
+                    :label="i18n('Date')"
                     :interval="intervals.sale_returns.date"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
                     disable-filtering
-                    :title="i18n('Product')"
+                    :label="i18n('Product')"
                     v-model="params.productId"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :title="i18n('Finalized')"
+                    :label="i18n('Finalized')"
                     v-model="filters.sale_returns.is_finalized"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :title="i18n('Fulfilled')"
+                    :label="i18n('Fulfilled')"
                     v-model="params.fulfilled"/>
             </div>
         </div>

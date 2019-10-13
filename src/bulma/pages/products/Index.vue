@@ -13,7 +13,7 @@
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
                     default="thirtyDays"
-                    :title="i18n('Updated')"
+                    :label="i18n('Updated')"
                     :interval="intervals.products.updated_at"/>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <template>
     <core-select-filter :i18n="i18n"
-        :title="i18n('Supplier')">
+        :label="i18n('Supplier')">
         <div class="is-flex">
             <enso-select class="select-wrapper"
                 v-bind="$attrs"
