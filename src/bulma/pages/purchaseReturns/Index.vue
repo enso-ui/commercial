@@ -5,31 +5,31 @@
             <div class="column is-4">
                 <enso-select-filter class="box raises-on-hover"
                     source="administration.companies.options"
-                    :label="i18n('Supplier')"
+                    :name="i18n('Supplier')"
                     v-model="filters.purchase_returns.supplier_id"/>
             </div>
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
                     default="thirtyDays"
-                    :label="i18n('Date')"
+                    :name="i18n('Date')"
                     :interval="intervals.purchase_returns.date"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
                     disable-filtering
-                    :label="i18n('Product')"
+                    :name="i18n('Product')"
                     v-model="params.productId"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Finalized')"
+                    :name="i18n('Finalized')"
                     v-model="filters.purchase_returns.is_finalized"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Fulfilled')"
+                    :name="i18n('Fulfilled')"
                     v-model="params.fulfilled"/>
             </div>
         </div>

@@ -9,13 +9,13 @@
             <div class="column is-3-desktop">
                 <enso-select-filter class="box raises-on-hover"
                     source="commercial.audit.suppliers"
-                    :label="i18n('Supplier')"
+                    :name="i18n('Supplier')"
                     v-model="filters.client_stocks.supplier_id"/>
             </div>
             <div class="column is-3-desktop">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
-                    :label="i18n('Product')"
+                    :name="i18n('Product')"
                     v-model="filters.client_stocks.product_id"/>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.sales.dateInterval"
                     default="thirtyDays"
-                    :label="i18n('Date')"
+                    :name="i18n('Date')"
                     :interval="intervals.sales.date"/>
             </div>
         </div>
@@ -75,7 +75,7 @@
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.purchases.dateInterval"
                     default="thirtyDays"
-                    :label="i18n('Date')"
+                    :name="i18n('Date')"
                     :interval="intervals.purchases.date"/>
             </div>
         </div>

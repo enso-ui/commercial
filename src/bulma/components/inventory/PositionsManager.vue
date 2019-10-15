@@ -2,7 +2,7 @@
     <card header
         refresh
         icon="box-open"
-        :label="i18n('Position Manager')"
+        :name="i18n('Position Manager')"
         :badge="totalQuantity"
         :overlay="loading"
         @refresh="fetch">

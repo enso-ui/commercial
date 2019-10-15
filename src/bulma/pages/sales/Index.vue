@@ -10,7 +10,7 @@
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
                     default="thirtyDays"
-                    :label="i18n('Date')"
+                    :name="i18n('Date')"
                     :interval="intervals.sales.date"/>
             </div>
         </div>
@@ -20,34 +20,34 @@
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
                     disable-filtering
-                    :label="i18n('Product')"
+                    :name="i18n('Product')"
                     v-model="params.productId"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Finalized')"
+                    :name="i18n('Finalized')"
                     v-model="filters.sales.is_finalized"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Loss')"
+                    :name="i18n('Loss')"
                     v-model="filters.sales.is_loss"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Fulfilled')"
+                    :name="i18n('Fulfilled')"
                     v-model="params.fulfilled"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :label="i18n('Emag')"
+                    :name="i18n('Emag')"
                     v-model="params.emag"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
                     source="administration.users.options"
                     label="person.name"
-                    :label="i18n('User')"
+                    :name="i18n('User')"
                     v-model="filters.sales.created_by"/>
             </div>
         </div>
