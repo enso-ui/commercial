@@ -33,7 +33,7 @@
   "dependencies": {
     "@enso-ui/accessories": "2.1.x",
     "@enso-ui/card": "1.0.x",
-    "@enso-ui/data-import": "1.0.x",
+    "@enso-ui/data-import": "1.1.x",
     "@enso-ui/filters": "1.2.x",
     "@enso-ui/financials": "1.1.x",
     "@enso-ui/forms": "1.2.x",
