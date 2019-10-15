@@ -133,7 +133,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.4,
+            apiVersion: 1.5,
             ready: false,
             filters: {
                 client_stocks: {

@@ -91,7 +91,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1,
+            apiVersion: 1.1,
             ready: false,
             filters: {
                 sales: {
