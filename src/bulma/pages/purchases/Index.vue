@@ -13,7 +13,7 @@
                     v-model="params.dateInterval"
                     default="thirtyDays"
                     :name="i18n('Date')"
-                    :interval="intervals.purchases.date"/>
+                    :interval="intervals"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
@@ -48,7 +48,7 @@
 
         <enso-table class="box is-paddingless raises-on-hover"
             id="purchases"
-            :intervals="intervals"
+            :intervals="tableIntervals"
             :filters="filters"
             :params="params"
             @create="create"
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { EnsoTable } from '@enso-ui/tables/bulma';
 import { FilterState } from '@enso-ui/filters/renderless';
@@ -80,13 +81,8 @@ export default {
                 },
             },
             intervals: {
-                purchases: {
-                    date: {
-                        min: null,
-                        max: null,
-                        dateFormat: null,
-                    },
-                },
+                min: null,
+                max: null,
             },
             params: {
                 fulfilled: null,
@@ -95,6 +91,22 @@ export default {
             },
         };
     },
+
+    computed: {
+        ...mapState(['meta']),
+        tableIntervals() {
+            return {
+                purchases: {
+                    date: {
+                        min: this.intervals.min,
+                        max: this.intervals.max,
+                        dateFormat: this.meta && this.meta.dateTimeFormat,
+                    },
+                },
+            };
+        },
+    },
+
 
     methods: {
         create() {

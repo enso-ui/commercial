@@ -11,7 +11,7 @@
                     v-model="params.dateInterval"
                     default="thirtyDays"
                     :name="i18n('Date')"
-                    :interval="intervals.sales.date"/>
+                    :interval="intervals"/>
             </div>
         </div>
         <div class="columns is-multiline is-mobile is-centered"
@@ -62,7 +62,7 @@
         <enso-table class="box is-paddingless raises-on-hover"
             id="sales"
             :filters="filters"
-            :intervals="intervals"
+            :intervals="tableIntervals"
             :params="params"
             @create-company="create('company')"
             @create-individual="create('individual')"
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { EnsoTable } from '@enso-ui/tables/bulma';
 import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -101,13 +102,8 @@ export default {
                 },
             },
             intervals: {
-                sales: {
-                    date: {
-                        min: null,
-                        max: null,
-                        dateFormat: null,
-                    },
-                },
+                min: null,
+                max: null,
             },
             params: {
                 fulfilled: null,
@@ -117,6 +113,21 @@ export default {
                 dateInterval: 'thirtyDays',
             },
         };
+    },
+
+    computed: {
+        ...mapState(['meta']),
+        tableIntervals() {
+            return {
+                sales: {
+                    date: {
+                        min: this.intervals.min,
+                        max: this.intervals.max,
+                        dateFormat: this.meta && this.meta.dateTimeFormat,
+                    },
+                },
+            };
+        },
     },
 
     methods: {

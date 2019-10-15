@@ -11,7 +11,7 @@
                     v-model="params.dateInterval"
                     default="thirtyDays"
                     :name="i18n('Date')"
-                    :interval="intervals.sale_returns.date"/>
+                    :interval="intervals"/>
             </div>
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
@@ -43,7 +43,7 @@
         <enso-table class="box is-paddingless raises-on-hover"
             id="sale_returns"
             :filters="filters"
-            :intervals="intervals"
+            :intervals="tableIntervals"
             :params="params"
             @create-company="create('company')"
             @create-individual="create('individual')"
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
@@ -82,13 +83,8 @@ export default {
                 },
             },
             intervals: {
-                sale_returns: {
-                    date: {
-                        min: null,
-                        max: null,
-                        dateFormat: null,
-                    },
-                },
+                min: null,
+                max: null,
             },
             params: {
                 fulfilled: null,
@@ -97,6 +93,21 @@ export default {
                 dateInterval: 'thirtyDays',
             },
         };
+    },
+
+    computed: {
+        ...mapState(['meta']),
+        tableIntervals() {
+            return {
+                sale_returns: {
+                    date: {
+                        min: this.intervals.min,
+                        max: this.intervals.max,
+                        dateFormat: this.meta && this.meta.dateTimeFormat,
+                    },
+                },
+            };
+        },
     },
 
     methods: {
