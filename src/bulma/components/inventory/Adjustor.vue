@@ -40,7 +40,10 @@
             <button class="button is-small is-info has-margin-top-small"
                 :class="{'is-loading' : loading}"
                 @click="updateAdjustmentOrders"
-                v-if="quantity === null || quantity === ''">
+                v-if="
+                    canAccess('inventory.updateAdjustmentOrders')
+                    && (quantity === null || quantity === '')
+                ">
                 <span>{{ i18n('Update Adjustments') }}</span>
                 <span class="icon is-small">
                     <fa icon="sync"/>
@@ -64,7 +67,7 @@ export default {
 
     directives: { selectOnFocus },
 
-    inject: ['errorHandler', 'i18n', 'route'],
+    inject: ['errorHandler', 'i18n', 'route', 'canAccess'],
 
     props: {
         productId: {
