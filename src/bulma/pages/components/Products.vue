@@ -3,15 +3,14 @@
         <div class="column">
             <div class="field">
                 <div class="control">
-                    <enso-select class="product-selector"
-                        label="label"
-                        :placeholder="i18n('Pick a product')"
+                    <enso-typeahead is-rounded
+                        v-bind="$attrs"
+                        v-on="$listeners"
+                        @selected="clear"
                         source="commercial.products"
-                        :pivot-params="pivotParams"
-                        :custom-params="customParams"
-                        :paginate="100"
-                        disable-filtering
-                        v-on="$listeners">
+                        :params="params"
+                        :paginate="10"
+                        ref="typeahead">
                         <template v-slot:option="{ option, highlight }">
                             <p v-html="highlight(option.name)"/>
                             <p v-html="highlight(option.partNumber)"/>
@@ -39,7 +38,7 @@
                                 <strong>{{ option.reservedQuantity }}</strong>
                             </p>
                         </template>
-                    </enso-select>
+                    </enso-typeahead>
                 </div>
             </div>
         </div>
@@ -64,9 +63,10 @@
 import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
 import { EnsoSelect } from '@enso-ui/select/bulma';
+import { EnsoTypeahead } from '@enso-ui/typeahead/bulma';
 import VueSwitch from '@enso-ui/switch/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faDollarSign, faHandPaper } from '@fortawesome/free-solid-svg-icons';
+import { faHandPaper } from '@fortawesome/free-solid-svg-icons';
 import { faInventory } from '@fortawesome/pro-solid-svg-icons';
 
 library.add(faDollarSign, faInventory, faHandPaper);
@@ -76,7 +76,7 @@ export default {
 
     directives: { tooltip: VTooltip },
 
-    components: { EnsoSelect, VueSwitch },
+    components: { EnsoSelect, EnsoTypeahead, VueSwitch },
 
     inject: ['i18n', 'order'],
 
@@ -91,6 +91,12 @@ export default {
         },
         type() {
             return this.form.param('type');
+        },
+        params() {
+            return {
+                custom: this.customParams,
+                pivot: this.pivotParams,
+            };
         },
         customParams() {
             switch (this.type) {
@@ -115,6 +121,12 @@ export default {
             default:
                 return {};
             }
+        },
+    },
+
+    methods: {
+        clear() {
+            this.$nextTick(this.$refs.typeahead.clear());
         },
     },
 };

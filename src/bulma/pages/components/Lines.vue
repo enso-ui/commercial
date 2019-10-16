@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <products @input="add"
+                <products @selected="add"
                     v-if="!fulfilling()"/>
             </div>
             <slot name="mappings"/>
