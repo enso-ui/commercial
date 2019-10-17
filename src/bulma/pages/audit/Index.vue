@@ -28,7 +28,7 @@
                 :path="route('commercial.audit.stocks.initTable')"
                 :filters="stockFilters"
                 @import="openUploader"
-                @reset="$refs.filterState.reset()"/>
+                @reset="$refs.intervalsState.reset()"/>
             <import-uploader v-show="false"
                 :path="route('import.store')"
                 :params="uploaderParams"
@@ -55,7 +55,7 @@
                     :path="route('commercial.audit.sales.initTable')"
                     :filters="productFilter"
                     :params="saleParams"
-                    @reset="$refs.saleIntervalsState.reset();"/>
+                    @reset="$refs.intervalsState.reset();"/>
             </div>
             <div class="column">
                 <p class="title is-5 has-text-centered">
@@ -66,7 +66,7 @@
                     :path="route('commercial.audit.saleReturns.initTable')"
                     :filters="productFilter"
                     :params="saleParams"
-                    @reset="$refs.saleIntervalsState.reset();"/>
+                    @reset="$refs.intervalsState.reset();"/>
             </div>
         </div>
         <div class="columns is-centered"
