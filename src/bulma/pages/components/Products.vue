@@ -3,39 +3,38 @@
         <div class="column">
             <div class="field">
                 <div class="control">
-                    <enso-typeahead is-rounded
-                        v-bind="$attrs"
-                        v-on="$listeners"
-                        @selected="clear"
+                    <enso-typeahead class="product-selector"
                         source="commercial.products"
                         :params="params"
                         :paginate="10"
+                        @selected="$refs.typeahead.clear()"
+                        v-on="$listeners"
                         ref="typeahead">
-                        <template v-slot:option="{ option, highlight }">
-                            <p v-html="highlight(option.name)"/>
-                            <p v-html="highlight(option.partNumber)"/>
-                            <p v-html="highlight(option.author)"/>
-                            <p v-html="highlight(option.publisher.name)" v-if="option.publisher"/>
+                        <template v-slot:option="{ item, highlight }">
+                            <p v-html="highlight(item.name)"/>
+                            <p v-html="highlight(item.partNumber)"/>
+                            <p v-html="highlight(item.author)"/>
+                            <p v-html="highlight(item.publisher.name)" v-if="item.publisher"/>
                             <p>
                                 <span class="icon is-small has-text-info">
                                     <fa icon="dollar-sign"
                                         size="xs"/>
                                 </span>
                                 :
-                                <strong>{{ option.price }}</strong>
+                                <strong>{{ item.price }}</strong>
                                 <span class="icon is-small"
-                                    :class="option.quantity ? 'has-text-success' : 'has-text-danger'">
+                                    :class="item.quantity ? 'has-text-success' : 'has-text-danger'">
                                     <fa icon="inventory"
                                         size="xs"/>
                                 </span>
                                 :
-                                <strong>{{ option.quantity }}</strong>
+                                <strong>{{ item.quantity }}</strong>
                                 <span class="icon is-small has-text-info">
                                     <fa icon="hand-paper"
                                         size="xs"/>
                                 </span>
                                 :
-                                <strong>{{ option.reservedQuantity }}</strong>
+                                <strong>{{ item.reservedQuantity }}</strong>
                             </p>
                         </template>
                     </enso-typeahead>
@@ -62,7 +61,6 @@
 <script>
 import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
-import { EnsoSelect } from '@enso-ui/select/bulma';
 import { EnsoTypeahead } from '@enso-ui/typeahead/bulma';
 import VueSwitch from '@enso-ui/switch/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -76,7 +74,7 @@ export default {
 
     directives: { tooltip: VTooltip },
 
-    components: { EnsoSelect, EnsoTypeahead, VueSwitch },
+    components: { EnsoTypeahead, VueSwitch },
 
     inject: ['i18n', 'order'],
 
@@ -123,23 +121,5 @@ export default {
             }
         },
     },
-
-    methods: {
-        clear() {
-            this.$nextTick(this.$refs.typeahead.clear());
-        },
-    },
 };
 </script>
-
-<style lang="scss">
-    .product-selector.dropdown.vue-select {
-        .dropdown-menu {
-            .dropdown-content {
-                .options {
-                    max-height: 20.5em;
-                }
-            }
-        }
-    }
-</style>
