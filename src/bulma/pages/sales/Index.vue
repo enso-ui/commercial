@@ -13,9 +13,6 @@
                     :name="i18n('Date')"
                     :interval="intervals"/>
             </div>
-        </div>
-        <div class="columns is-multiline is-mobile is-centered"
-            v-if="ready">
             <div class="column is-4-desktop is-3-widescreen">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"

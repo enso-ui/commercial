@@ -30,6 +30,13 @@
                     :name="i18n('Fulfilled')"
                     v-model="params.fulfilled"/>
             </div>
+            <div class="column is-4-desktop is-3-widescreen">
+                <enso-select-filter class="box raises-on-hover"
+                    source="administration.users.options"
+                    label="person.name"
+                    :name="i18n('User')"
+                    v-model="filters.sale_returns.created_by"/>
+            </div>
         </div>
 
         <filter-state :api-version="apiVersion"
