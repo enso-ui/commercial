@@ -259,6 +259,7 @@ export default {
             ).then(({ data }) => {
                 this.lines.splice(this.index, 1);
                 this.updateOrder(data.order);
+                this.order.lineCount--;
             }).catch(error => this.rowError(error, this.reload));
 
             this.chainRequest(call);

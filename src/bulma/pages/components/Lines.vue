@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <products @selected="add"
+                <products @selected="showOrAdd"
                     v-if="!fulfilling()"/>
             </div>
             <slot name="mappings"/>
@@ -26,10 +26,12 @@
                         v-on="$listeners"
                         ref="line"/>
                     <tr key="more"
-                        v-if="order.page * order.form.param('pageLimit') === lines.length">
+                        v-if="lines.length < order.lineCount">
                         <td colspan="100%">
                             <div class="has-text-centered has-padding-medium">
-                                <a @click="order.page++; fetch()">{{ i18n ('load more') }}...</a>
+                                <a @click="order.page++; fetch()">
+                                    {{ i18n ('load more') }}... ({{ lines.length }} / {{ order.lineCount }})
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -89,18 +91,7 @@ export default {
                     this.order.processing = false;
                 }).catch(this.errorHandler);
         },
-        chainRequest(call) {
-            if (!this.order.promise) {
-                this.order.promise = call();
-                return;
-            }
-
-            this.order.promise = this.order.promise.then(call);
-        },
-        add(product) {
-
-            debugger
-
+        showOrAdd(product) {
             if (!product) {
                 return;
             }
@@ -115,6 +106,33 @@ export default {
                 return;
             }
 
+            this.fetchOrAdd(product);
+        },
+        fetchOrAdd(product) {
+            if(this.lines.length === this.order.lineCount) {
+                this.add(product);
+                return;
+            }
+
+            this.order.processing = true;
+            this.order.page = 1;
+
+            axios.get(this.route(
+                `commercial.${this.order.form.param('type')}s.lines.index`,
+                this.$route.params,
+                ), { params: { page: this.order.page, search: product.partNumber } })
+                .then(({ data }) => {
+                    if(data.data.length === 0) {
+                        this.add(product);
+                        return;
+                    }
+
+                    this.updateOrder(data.order);
+                    this.lines.splice(0, 0, ...data.data);
+                    this.order.processing = false;
+                }).catch(this.errorHandler);
+        },
+        add(product) {
             this.order.processing = true;
 
             const call = () => axios.post(
@@ -126,6 +144,7 @@ export default {
                 const { line, order } = data;
                 this.updateOrder(order);
                 this.lines.splice(0, 0, line);
+                this.order.lineCount++;
                 this.order.processing = false;
             }).catch((error) => {
                 this.order.processing = false;
@@ -133,6 +152,14 @@ export default {
             });
 
             this.chainRequest(call);
+        },
+        chainRequest(call) {
+            if (!this.order.promise) {
+                this.order.promise = call();
+                return;
+            }
+
+            this.order.promise = this.order.promise.then(call);
         },
         productIndex(productId) {
             return this.lines.findIndex(({ product }) => product.id === productId);

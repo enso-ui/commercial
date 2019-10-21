@@ -7,7 +7,10 @@
             </span>
         </a>
         <enso-form disable-state
-            @ready="order.form = $event.form"
+            @ready="
+                order.form = $event.form;
+                order.lineCount = order.form.param('lineCount');
+            "
             @error="order.form.fetch()"
             @submit="form.field('version').value = $event.version"
             ref="order">

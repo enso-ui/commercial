@@ -10,6 +10,7 @@ export default {
             processing: false,
             deleteModal: false,
             page: 1,
+            lineCount: null,
         },
     }),
 
