@@ -97,14 +97,17 @@ export default {
 
             this.order.promise = this.order.promise.then(call);
         },
-        add(productId) {
-            if (!productId) {
+        add(product) {
+
+            debugger
+
+            if (!product) {
                 return;
             }
 
             this.order.query = '';
 
-            const index = this.productIndex(productId);
+            const index = this.productIndex(product.id);
 
             if (index > -1) {
                 const line = this.lines.splice(index, 1);
@@ -117,7 +120,7 @@ export default {
             const call = () => axios.post(
                 this.route(
                     `commercial.${this.order.form.param('type')}s.lines.store`,
-                    { ...this.$route.params, product: productId },
+                    { ...this.$route.params, product: product.id },
                 ), { version: this.version() },
             ).then(({ data }) => {
                 const { line, order } = data;
