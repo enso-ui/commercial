@@ -152,7 +152,7 @@ export default {
 
             field.value = field.value
                 ? null
-                : format(new Date(), 'd-m-Y H:i');
+                : format(new Date(), 'Y-m-d H:i:s');
 
             this.form.submit();
         },
