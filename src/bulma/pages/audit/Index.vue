@@ -32,7 +32,7 @@
             <import-uploader v-show="false"
                 :path="route('import.store')"
                 :params="uploaderParams"
-                v-if="filters.client_stocks.client_id"
+                v-if="filters.client_stocks.company_id"
                 ref="uploader"/>
         </div>
         <div class="columns is-centered has-margin-top-large"
@@ -185,7 +185,7 @@ export default {
         uploaderParams() {
             return {
                 type: 'clientStocks',
-                client: this.filters.client_stocks.client_id,
+                client: this.filters.client_stocks.company_id,
             };
         },
         productFilter() {
@@ -215,7 +215,7 @@ export default {
 
     methods: {
         openUploader() {
-            if (!this.filters.client_stocks.client_id) {
+            if (!this.filters.client_stocks.company_id) {
                 this.$toastr.warning(this.i18n('Please select a client first'));
                 return;
             }
