@@ -4,16 +4,17 @@
             {{ index + 1 }}.
         </td>
         <td>
-            {{ line.product.name }}
+            {{ name }}
         </td>
         <td class="is-numeric">
-            {{ line.product.partNumber }}
+            {{ code }}
         </td>
         <td class="is-numeric quantity">
-            {{ line.product.stockQuantity }}
+            {{ stock }}
         </td>
         <td class="is-numeric quantity">
-            <span class="reserved">
+            <span class="reserved"
+                v-if="isProduct">
                 <template v-if="[enums.orders.Sale, enums.orders.PurchaseReturn].includes(type)">
                     <span :class="['tag', line.fullyReserved ? 'is-success': 'is-warning']">
                         {{ line.reserved }}
@@ -76,7 +77,7 @@
             {{ line.total | numberFormat(2) }}
         </td>
         <td class="has-text-centered"
-            v-if="order.warehouse">
+            v-if="isProduct && order.warehouse">
             <div class="select"
                 v-if="positionSelector">
                 <select :disabled="line.inStock || line.processing"
@@ -103,7 +104,7 @@
             </div>
         </td>
         <td class="has-text-centered"
-            v-if="order.warehouse">
+            v-if="isProduct && order.warehouse">
             <input class="input position"
                 :class="{'is-danger': errors.has('position') || position && !validPosition}"
                 v-select-on-focus
@@ -131,7 +132,7 @@
             </a>
             <a class="button is-naked"
                 :class="{'is-loading' : line.processing}"
-               v-if="!finalized() && order.warehouse && notInStock"
+               v-if="isProduct && !finalized() && order.warehouse && notInStock"
                v-show="line.positionId"
                @click="insertInStock">
                 <span class="icon is-small"
@@ -142,7 +143,7 @@
             </a>
             <a class="button is-naked"
                :class="{'is-loading' : line.processing}"
-               v-if="!finalized() && order.warehouse && !notInStock"
+               v-if="isProduct && !finalized() && order.warehouse && !notInStock"
                @click="removeFromStock">
                 <span class="icon is-small"
                     :class="{ 'has-text-danger': hasIns() }">
@@ -199,6 +200,24 @@ export default {
 
     computed: {
         ...mapState(['enums']),
+        isProduct() {
+            return this.line.product !== null;
+        },
+        name() {
+            return this.isProduct
+                ? this.line.product.name
+                : this.line.service.name
+        },
+        code() {
+            return this.isProduct
+                ? this.line.product.partNumber
+                : this.line.service.partNumber
+        },
+        stock() {
+            return this.isProduct
+                ? this.line.product.stockQuantity
+                : ''
+        },
         lines() {
             return this.order.lines;
         },

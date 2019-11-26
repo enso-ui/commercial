@@ -9,6 +9,7 @@
                         :paginate="10"
                         @selected="$refs.typeahead.clear()"
                         v-on="$listeners"
+                        v-if="addsProducts"
                         ref="typeahead">
                         <template v-slot:option="{ item, highlight }">
                             <p v-html="highlight(item.name)"/>
@@ -38,17 +39,39 @@
                             </p>
                         </template>
                     </enso-typeahead>
+                    <enso-typeahead class="product-selector"
+                        source="commercial.services"
+                        :params="params"
+                        :paginate="10"
+                        @selected="$refs.services.clear()"
+                        v-on="$listeners"
+                        v-if="!addsProducts"
+                        ref="services"/>
                 </div>
             </div>
         </div>
         <div class="column is-narrow"
-            v-if="type === enums.orders.Purchase">
+             v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
             <div class="is-flex has-padding-medium">
                 <vue-switch class="is-medium"
-                    :disabled="order.form && order.form.field('fulfilled_at').value !== null"
-                    v-model="mappings"/>
+                            :disabled="order.form && order.form.field('fulfilled_at').value !== null"
+                            v-model="addsProducts"/>
                 <span class="icon is-small has-text-info"
-                    v-tooltip="
+                      v-tooltip="
+                        addsProducts ? i18n('Products') : i18n('Services')
+                    ">
+                    <fa icon="info-circle"/>
+                </span>
+            </div>
+        </div>
+        <div class="column is-narrow"
+             v-if="type === enums.orders.Purchase">
+            <div class="is-flex has-padding-medium">
+                <vue-switch class="is-medium"
+                            :disabled="order.form && order.form.field('fulfilled_at').value !== null"
+                            v-model="mappings"/>
+                <span class="icon is-small has-text-info"
+                      v-tooltip="
                         mappings ? i18n('Only mapped products') : i18n('All products')
                     ">
                     <fa icon="info-circle"/>
@@ -80,6 +103,7 @@ export default {
 
     data: () => ({
         mappings: true,
+        addsProducts: false,
     }),
 
     computed: {
@@ -98,26 +122,26 @@ export default {
         },
         customParams() {
             switch (this.type) {
-            case this.enums.orders.PurchaseReturn:
-                return { type: this.type, supplierId: this.order.partner.id };
-            case this.enums.orders.SaleReturn:
-                return {
-                    type: this.type,
-                    person_id: this.form.field('person_id').value,
-                    company_id: this.form.field('company_id').value,
-                };
-            default:
-                return { type: this.type };
+                case this.enums.orders.PurchaseReturn:
+                    return { type: this.type, supplierId: this.order.partner.id };
+                case this.enums.orders.SaleReturn:
+                    return {
+                        type: this.type,
+                        person_id: this.form.field('person_id').value,
+                        company_id: this.form.field('company_id').value,
+                    };
+                default:
+                    return { type: this.type };
             }
         },
         pivotParams() {
             switch (this.type) {
-            case this.enums.orders.Purchase:
-                return this.mappings && this.form.field('supplier_id').value !== null
-                    ? { suppliers: { id: this.form.field('supplier_id').value } }
-                    : {};
-            default:
-                return {};
+                case this.enums.orders.Purchase:
+                    return this.mappings && this.form.field('supplier_id').value !== null
+                        ? { suppliers: { id: this.form.field('supplier_id').value } }
+                        : {};
+                default:
+                    return {};
             }
         },
     },

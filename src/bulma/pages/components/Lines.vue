@@ -91,14 +91,14 @@ export default {
                     this.order.processing = false;
                 }).catch(this.errorHandler);
         },
-        showOrAdd(product) {
-            if (!product) {
+        showOrAdd(item) {
+            if (!item) {
                 return;
             }
 
             this.order.query = '';
 
-            const index = this.productIndex(product.id);
+            const index = this.itemIndex(item);
 
             if (index > -1) {
                 const line = this.lines.splice(index, 1);
@@ -106,11 +106,12 @@ export default {
                 return;
             }
 
-            this.fetchOrAdd(product);
+            this.fetchOrAdd(item);
         },
-        fetchOrAdd(product) {
+        //TODO update here
+        fetchOrAdd(item) {
             if(this.lines.length === this.order.lineCount) {
-                this.add(product);
+                this.add(item);
                 return;
             }
 
@@ -120,10 +121,10 @@ export default {
             axios.get(this.route(
                 `commercial.${this.order.form.param('type')}s.lines.index`,
                 this.$route.params,
-                ), { params: { page: this.order.page, search: product.partNumber } })
+                ), { params: { page: this.order.page, search: item.partNumber } })
                 .then(({ data }) => {
                     if(data.data.length === 0) {
-                        this.add(product);
+                        this.add(item);
                         return;
                     }
 
@@ -132,14 +133,14 @@ export default {
                     this.order.processing = false;
                 }).catch(this.errorHandler);
         },
-        add(product) {
+        add(item) {
             this.order.processing = true;
 
             const call = () => axios.post(
                 this.route(
                     `commercial.${this.order.form.param('type')}s.lines.store`,
-                    { ...this.$route.params, product: product.id },
-                ), { version: this.version() },
+                    { ...this.$route.params },
+                ), { version: this.version(), item: item },
             ).then(({ data }) => {
                 const { line, order } = data;
                 this.updateOrder(order);
@@ -161,8 +162,11 @@ export default {
 
             this.order.promise = this.order.promise.then(call);
         },
-        productIndex(productId) {
-            return this.lines.findIndex(({ product }) => product.id === productId);
+        itemIndex(item) {
+            return item.isProduct
+                ? this.lines.findIndex(({ product }) => product && product.id === item.id)
+                : this.lines.findIndex(({ service }) => service && service.id === item.id);
+
         },
     },
 
