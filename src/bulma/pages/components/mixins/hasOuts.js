@@ -4,7 +4,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
-                .filter(comp => comp.line.product)
+                .filter(comp => comp.isProduct)
                 .filter(comp => !comp.line.removedFromStock)
                 .forEach(comp => comp.removeFromStock());
         },
@@ -12,7 +12,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
-                .filter(comp => comp.line.product)
+                .filter(comp => comp.isProduct)
                 .filter(comp => comp.line.removedFromStock && comp.line.positionId)
                 .forEach(comp => comp.insertInStock());
         },
@@ -21,8 +21,7 @@ export default {
         },
         someRemovedFromStock() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .some(({ removedFromStock }) => removedFromStock);
         },
         someInStock() {
@@ -31,27 +30,23 @@ export default {
         },
         allRemovedFromStock() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .every(({ removedFromStock }) => removedFromStock);
         },
         insertable() {
             return !this.form.field('is_finalized').value
                 && this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .some(line => line.removedFromStock && line.positionId);
         },
         removable() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .some(line => !line.removedFromStock && line.fullyReserved);
         },
         fullyReserved() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .every(({ fullyReserved }) => fullyReserved);
         },
     },

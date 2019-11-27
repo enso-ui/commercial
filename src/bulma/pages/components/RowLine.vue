@@ -77,34 +77,36 @@
             {{ line.total | numberFormat(2) }}
         </td>
         <td class="has-text-centered"
-            v-if="isProduct && order.warehouse">
-            <div class="select"
-                v-if="positionSelector">
-                <select :disabled="line.inStock || line.processing"
-                    v-model="line.positionId">
-                    <option class="option"
-                        v-for="position in line.positions"
-                        :key="position.id"
-                        :selected="line.positionId === position.id"
-                        :value="position.id">
-                        {{ position.quantityLabel || position.label }}
-                    </option>
-                    <option v-if="line.positions.length === 0"
-                        :value="null">
-                        {{ i18n('No position') }}
-                    </option>
-                </select>
-            </div>
-            <div v-else>
-                <span class="tag is-info is-bold"
-                    v-for="position in positionsQuantity"
-                    :key="position">
-                    {{ position }}
-                </span>
+            v-if="order.warehouse">
+            <div v-if="isProduct">
+                <div class="select"
+                    v-if="positionSelector">
+                    <select :disabled="line.inStock || line.processing"
+                        v-model="line.positionId">
+                        <option class="option"
+                            v-for="position in line.positions"
+                            :key="position.id"
+                            :selected="line.positionId === position.id"
+                            :value="position.id">
+                            {{ position.quantityLabel || position.label }}
+                        </option>
+                        <option v-if="line.positions.length === 0"
+                            :value="null">
+                            {{ i18n('No position') }}
+                        </option>
+                    </select>
+                </div>
+                <div v-else>
+                    <span class="tag is-info is-bold"
+                        v-for="position in positionsQuantity"
+                        :key="position">
+                            {{ position }}
+                    </span>
+                </div>
             </div>
         </td>
         <td class="has-text-centered"
-            v-if="isProduct && order.warehouse">
+            v-if="order.warehouse">
             <input class="input position"
                 :class="{'is-danger': errors.has('position') || position && !validPosition}"
                 v-select-on-focus
@@ -114,7 +116,7 @@
                 @input="errors.clear('position')"
                 @keypress.enter="addPosition"
                 @keydown.esc="position = null; errors.clear('position')"
-                v-if="notInStock">
+                v-if="isProduct && notInStock">
             <p class="help is-danger has-text-centered"
                v-if="errors.has('position')">
                 {{ errors.get('position') }}

@@ -4,7 +4,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
-                .filter(comp => comp.line.product)
+                .filter(comp => comp.isProduct)
                 .filter(comp => !comp.line.inStock && comp.line.positionId)
                 .forEach(comp => comp.insertInStock());
         },
@@ -12,7 +12,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
-                .filter(comp => comp.line.product)
+                .filter(comp => comp.isProduct)
                 .filter(comp => comp.line.inStock)
                 .forEach(comp => comp.removeFromStock());
         },
@@ -21,20 +21,17 @@ export default {
         },
         someInStock() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .some(({ inStock }) => inStock);
         },
         allInStock() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .every(({ inStock }) => inStock);
         },
         insertable() {
             return this.hasLines
-                && this.lines
-                    .filter(line => line.product)
+                && this.productLines
                     .some(line => !line.inStock && line.positionId);
         },
     },

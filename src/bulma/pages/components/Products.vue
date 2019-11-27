@@ -54,10 +54,10 @@
              v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
             <div class="is-flex has-padding-medium">
                 <vue-switch class="is-medium"
-                            :disabled="order.form && order.form.field('fulfilled_at').value !== null"
-                            v-model="addsProducts"/>
+                    :disabled="order.form && order.form.field('fulfilled_at').value !== null"
+                    v-model="addsProducts"/>
                 <span class="icon is-small has-text-info"
-                      v-tooltip="
+                    v-tooltip="
                         addsProducts ? i18n('Products') : i18n('Services')
                     ">
                     <fa icon="info-circle"/>
@@ -68,11 +68,11 @@
              v-if="type === enums.orders.Purchase">
             <div class="is-flex has-padding-medium">
                 <vue-switch class="is-medium"
-                            :disabled="order.form && order.form.field('fulfilled_at').value !== null"
-                            v-model="mappings"/>
+                    :disabled="order.form && order.form.field('fulfilled_at').value !== null"
+                    v-model="mappings"/>
                 <span class="icon is-small has-text-info"
-                      v-tooltip="
-                        mappings ? i18n('Only mapped products') : i18n('All products')
+                     v-tooltip="
+                         mappings ? i18n('Only mapped products') : i18n('All products')
                     ">
                     <fa icon="info-circle"/>
                 </span>
@@ -103,7 +103,7 @@ export default {
 
     data: () => ({
         mappings: true,
-        addsProducts: false,
+        addsProducts: true,
     }),
 
     computed: {
