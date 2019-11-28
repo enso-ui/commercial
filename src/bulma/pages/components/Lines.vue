@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { debounce } from 'lodash';
 import Products from './Products.vue';
 import Search from './Search.vue';
@@ -63,6 +64,7 @@ export default {
     },
 
     computed: {
+        ...mapState(['enums']),
         lines() {
             return this.order.lines;
         },
@@ -108,9 +110,8 @@ export default {
 
             this.fetchOrAdd(item);
         },
-        //TODO update here
         fetchOrAdd(item) {
-            if(this.lines.length === this.order.lineCount) {
+            if (this.lines.length === this.order.lineCount) {
                 this.add(item);
                 return;
             }
@@ -136,11 +137,7 @@ export default {
         add(item) {
             this.order.processing = true;
 
-            const call = () => axios.post(
-                this.route(
-                    `commercial.${this.order.form.param('type')}s.lines.store`,
-                    { ...this.$route.params },
-                ), { version: this.version(), item: item },
+            const call = () => axios.post(this.determineRoute(item), { version: this.version() },
             ).then(({ data }) => {
                 const { line, order } = data;
                 this.updateOrder(order);
@@ -154,6 +151,17 @@ export default {
 
             this.chainRequest(call);
         },
+        determineRoute(item) {
+            const type = this.order.form.param('type');
+            const mode = item.isProduct ? 'Product' : 'Service';
+
+            let params = { ...this.$route.params, product: item.id, service: item.id };
+            let routeName = type === this.enums.orders.Purchase || type === this.enums.orders.Sale
+                ? `commercial.${this.order.form.param('type')}s.lines.store${mode}`
+                : `commercial.${this.order.form.param('type')}s.lines.store`
+
+            return this.route(routeName, params);
+        },
         chainRequest(call) {
             if (!this.order.promise) {
                 this.order.promise = call();
@@ -166,7 +174,6 @@ export default {
             return item.isProduct
                 ? this.lines.findIndex(({ product }) => product && product.id === item.id)
                 : this.lines.findIndex(({ service }) => service && service.id === item.id);
-
         },
     },
 

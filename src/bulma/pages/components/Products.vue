@@ -9,7 +9,7 @@
                         :paginate="10"
                         @selected="$refs.typeahead.clear()"
                         v-on="$listeners"
-                        v-if="addsProducts"
+                        v-if="mode === 'product'"
                         ref="typeahead">
                         <template v-slot:option="{ item, highlight }">
                             <p v-html="highlight(item.name)"/>
@@ -41,31 +41,24 @@
                     </enso-typeahead>
                     <enso-typeahead class="product-selector"
                         source="commercial.services"
-                        :params="params"
                         :paginate="10"
                         @selected="$refs.services.clear()"
                         v-on="$listeners"
-                        v-if="!addsProducts"
+                        v-if="mode === 'service'"
                         ref="services"/>
                 </div>
             </div>
         </div>
         <div class="column is-narrow"
-             v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
-            <div class="is-flex has-padding-medium">
-                <vue-switch class="is-medium"
+            v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
+                <enso-filter class="line-mode"
+                    compact hide-off icons
                     :disabled="order.form && order.form.field('fulfilled_at').value !== null"
-                    v-model="addsProducts"/>
-                <span class="icon is-small has-text-info"
-                    v-tooltip="
-                        addsProducts ? i18n('Products') : i18n('Services')
-                    ">
-                    <fa icon="info-circle"/>
-                </span>
-            </div>
+                    :options="modes"
+                    v-model="mode"/>
         </div>
         <div class="column is-narrow"
-             v-if="type === enums.orders.Purchase">
+            v-if="type === enums.orders.Purchase">
             <div class="is-flex has-padding-medium">
                 <vue-switch class="is-medium"
                     :disabled="order.form && order.form.field('fulfilled_at').value !== null"
@@ -87,23 +80,35 @@ import { VTooltip } from 'v-tooltip';
 import { EnsoTypeahead } from '@enso-ui/typeahead/bulma';
 import VueSwitch from '@enso-ui/switch/bulma';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHandPaper } from '@fortawesome/free-solid-svg-icons';
+import { faHandPaper, faCube, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import { faInventory } from '@fortawesome/pro-solid-svg-icons';
+import { EnsoFilter } from '@enso-ui/filters/bulma';
 
-library.add(faDollarSign, faInventory, faHandPaper);
+library.add(faDollarSign, faInventory, faHandPaper, faCube, faHandshake);
 
 export default {
     name: 'Products',
 
     directives: { tooltip: VTooltip },
 
-    components: { EnsoTypeahead, VueSwitch },
+    components: { EnsoTypeahead, VueSwitch, EnsoFilter },
 
     inject: ['i18n', 'order'],
 
     data: () => ({
         mappings: true,
         addsProducts: true,
+        modes: [
+            {
+                value: 'product',
+                icon: 'cube',
+            },
+            {
+                value: 'service',
+                icon: 'handshake',
+            }
+        ],
+        mode: 'product',
     }),
 
     computed: {
@@ -147,3 +152,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+    .line-mode.vue-filter .tabs-wrapper {
+        padding: 0;
+    }
+</style>
