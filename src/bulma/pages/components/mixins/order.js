@@ -27,6 +27,9 @@ export default {
         lines() {
             return this.order.lines;
         },
+        productLines() {
+            return this.order.lines.filter(line => line.product);
+        },
         hasLines() {
             return this.lines.length > 0;
         },

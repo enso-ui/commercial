@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <products @selected="showOrAdd"
+                <items @selected="showOrAdd"
                     v-if="!fulfilling()"/>
             </div>
             <slot name="mappings"/>
@@ -30,7 +30,8 @@
                         <td colspan="100%">
                             <div class="has-text-centered has-padding-medium">
                                 <a @click="order.page++; fetch()">
-                                    {{ i18n ('load more') }}... ({{ lines.length }} / {{ order.lineCount }})
+                                    {{ i18n ('load more') }}...
+                                    ({{ lines.length }} / {{ order.lineCount }})
                                 </a>
                             </div>
                         </td>
@@ -43,8 +44,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { debounce } from 'lodash';
-import Products from './Products.vue';
+import Items from './Items.vue';
 import Search from './Search.vue';
 import HeaderLine from './HeaderLine.vue';
 import RowLine from './RowLine.vue';
@@ -59,10 +61,11 @@ export default {
     ],
 
     components: {
-        Products, Search, HeaderLine, RowLine, FooterLine,
+        Items, Search, HeaderLine, RowLine, FooterLine,
     },
 
     computed: {
+        ...mapState(['enums']),
         lines() {
             return this.order.lines;
         },
@@ -91,14 +94,14 @@ export default {
                     this.order.processing = false;
                 }).catch(this.errorHandler);
         },
-        showOrAdd(product) {
-            if (!product) {
+        showOrAdd(item) {
+            if (!item) {
                 return;
             }
 
             this.order.query = '';
 
-            const index = this.productIndex(product.id);
+            const index = this.itemIndex(item);
 
             if (index > -1) {
                 const line = this.lines.splice(index, 1);
@@ -106,11 +109,11 @@ export default {
                 return;
             }
 
-            this.fetchOrAdd(product);
+            this.fetchOrAdd(item);
         },
-        fetchOrAdd(product) {
-            if(this.lines.length === this.order.lineCount) {
-                this.add(product);
+        fetchOrAdd(item) {
+            if (this.lines.length === this.order.lineCount) {
+                this.add(item);
                 return;
             }
 
@@ -120,10 +123,10 @@ export default {
             axios.get(this.route(
                 `commercial.${this.order.form.param('type')}s.lines.index`,
                 this.$route.params,
-                ), { params: { page: this.order.page, search: product.partNumber } })
+            ), { params: { page: this.order.page, search: item.partNumber || item.code } })
                 .then(({ data }) => {
-                    if(data.data.length === 0) {
-                        this.add(product);
+                    if (data.data.length === 0) {
+                        this.add(item);
                         return;
                     }
 
@@ -132,14 +135,12 @@ export default {
                     this.order.processing = false;
                 }).catch(this.errorHandler);
         },
-        add(product) {
+        add(item) {
             this.order.processing = true;
 
             const call = () => axios.post(
-                this.route(
-                    `commercial.${this.order.form.param('type')}s.lines.store`,
-                    { ...this.$route.params, product: product.id },
-                ), { version: this.version() },
+                this.route(this.postRoute(item), this.postParams(item)),
+                { version: this.version() },
             ).then(({ data }) => {
                 const { line, order } = data;
                 this.updateOrder(order);
@@ -153,6 +154,16 @@ export default {
 
             this.chainRequest(call);
         },
+        postRoute(item) {
+            const type = this.order.form.param('type');
+
+            return [this.enums.orders.Purchase, this.enums.orders.Sale].includes(type)
+                ? `commercial.${type}s.lines.store${item.type}`
+                : `commercial.${type}s.lines.store`;
+        },
+        postParams(item) {
+            return { ...this.$route.params, product: item.id, service: item.id };
+        },
         chainRequest(call) {
             if (!this.order.promise) {
                 this.order.promise = call();
@@ -161,8 +172,10 @@ export default {
 
             this.order.promise = this.order.promise.then(call);
         },
-        productIndex(productId) {
-            return this.lines.findIndex(({ product }) => product.id === productId);
+        itemIndex(item) {
+            return item.type === this.enums.lineItems.Product
+                ? this.lines.findIndex(({ product }) => product && product.id === item.id)
+                : this.lines.findIndex(({ service }) => service && service.id === item.id);
         },
     },
 

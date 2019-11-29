@@ -4,6 +4,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
+                .filter(comp => comp.isProduct)
                 .filter(comp => !comp.line.removedFromStock)
                 .forEach(comp => comp.removeFromStock());
         },
@@ -11,6 +12,7 @@ export default {
             this.$refs.order
                 .$refs.lines
                 .$refs.line
+                .filter(comp => comp.isProduct)
                 .filter(comp => comp.line.removedFromStock && comp.line.positionId)
                 .forEach(comp => comp.insertInStock());
         },
@@ -19,7 +21,8 @@ export default {
         },
         someRemovedFromStock() {
             return this.hasLines
-                && this.lines.some(({ removedFromStock }) => removedFromStock);
+                && this.productLines
+                    .some(({ removedFromStock }) => removedFromStock);
         },
         someInStock() {
             return this.someRemovedFromStock()
@@ -27,20 +30,24 @@ export default {
         },
         allRemovedFromStock() {
             return this.hasLines
-                && this.lines.every(({ removedFromStock }) => removedFromStock);
+                && this.productLines
+                    .every(({ removedFromStock }) => removedFromStock);
         },
         insertable() {
             return !this.form.field('is_finalized').value
                 && this.hasLines
-                && this.lines.some(line => line.removedFromStock && line.positionId);
+                && this.productLines
+                    .some(line => line.removedFromStock && line.positionId);
         },
         removable() {
             return this.hasLines
-                && this.lines.some(line => !line.removedFromStock && line.fullyReserved);
+                && this.productLines
+                    .some(line => !line.removedFromStock && line.fullyReserved);
         },
         fullyReserved() {
             return this.hasLines
-                && this.lines.every(({ fullyReserved }) => fullyReserved);
+                && this.productLines
+                    .every(({ fullyReserved }) => fullyReserved);
         },
     },
 };
