@@ -30,7 +30,8 @@
                         <td colspan="100%">
                             <div class="has-text-centered has-padding-medium">
                                 <a @click="order.page++; fetch()">
-                                    {{ i18n ('load more') }}... ({{ lines.length }} / {{ order.lineCount }})
+                                    {{ i18n ('load more') }}...
+                                    ({{ lines.length }} / {{ order.lineCount }})
                                 </a>
                             </div>
                         </td>
@@ -122,9 +123,9 @@ export default {
             axios.get(this.route(
                 `commercial.${this.order.form.param('type')}s.lines.index`,
                 this.$route.params,
-                ), { params: { page: this.order.page, search: item.partNumber } })
+            ), { params: { page: this.order.page, search: item.partNumber } })
                 .then(({ data }) => {
-                    if(data.data.length === 0) {
+                    if (data.data.length === 0) {
                         this.add(item);
                         return;
                     }
@@ -137,7 +138,9 @@ export default {
         add(item) {
             this.order.processing = true;
 
-            const call = () => axios.post(this.determineRoute(item), { version: this.version() },
+            const call = () => axios.post(
+                this.route(this.postRoute(item), this.postParams(item)),
+                { version: this.version() },
             ).then(({ data }) => {
                 const { line, order } = data;
                 this.updateOrder(order);
@@ -151,16 +154,15 @@ export default {
 
             this.chainRequest(call);
         },
-        determineRoute(item) {
+        postRoute(item) {
             const type = this.order.form.param('type');
-            const mode = item.isProduct ? 'Product' : 'Service';
 
-            let params = { ...this.$route.params, product: item.id, service: item.id };
-            let routeName = type === this.enums.orders.Purchase || type === this.enums.orders.Sale
-                ? `commercial.${this.order.form.param('type')}s.lines.store${mode}`
-                : `commercial.${this.order.form.param('type')}s.lines.store`
-
-            return this.route(routeName, params);
+            return [this.enums.orders.Purchase, this.enums.orders.Sale].includes(type)
+                ? `commercial.${type}s.lines.store${item.type}`
+                : `commercial.${type}s.lines.store`;
+        },
+        postParams(item) {
+            return { ...this.$route.params, product: item.id, service: item.id };
         },
         chainRequest(call) {
             if (!this.order.promise) {
