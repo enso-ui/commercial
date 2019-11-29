@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <products @selected="showOrAdd"
+                <items @selected="showOrAdd"
                     v-if="!fulfilling()"/>
             </div>
             <slot name="mappings"/>
@@ -46,7 +46,7 @@
 <script>
 import { mapState } from 'vuex';
 import { debounce } from 'lodash';
-import Products from './Products.vue';
+import Items from './Items.vue';
 import Search from './Search.vue';
 import HeaderLine from './HeaderLine.vue';
 import RowLine from './RowLine.vue';
@@ -61,7 +61,7 @@ export default {
     ],
 
     components: {
-        Products, Search, HeaderLine, RowLine, FooterLine,
+        Items, Search, HeaderLine, RowLine, FooterLine,
     },
 
     computed: {
@@ -123,7 +123,7 @@ export default {
             axios.get(this.route(
                 `commercial.${this.order.form.param('type')}s.lines.index`,
                 this.$route.params,
-            ), { params: { page: this.order.page, search: item.partNumber } })
+            ), { params: { page: this.order.page, search: item.partNumber || item.code } })
                 .then(({ data }) => {
                     if (data.data.length === 0) {
                         this.add(item);
@@ -173,7 +173,7 @@ export default {
             this.order.promise = this.order.promise.then(call);
         },
         itemIndex(item) {
-            return item.isProduct
+            return item.type === this.enums.lineItems.Product
                 ? this.lines.findIndex(({ product }) => product && product.id === item.id)
                 : this.lines.findIndex(({ service }) => service && service.id === item.id);
         },

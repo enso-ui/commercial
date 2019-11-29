@@ -93,7 +93,7 @@ import { faInventory } from '@fortawesome/pro-solid-svg-icons';
 library.add(faDollarSign, faInventory, faHandPaper, faProjectDiagram, faHandshake);
 
 export default {
-    name: 'Products',
+    name: 'Items',
 
     directives: { tooltip: VTooltip },
 
@@ -103,7 +103,6 @@ export default {
 
     data: () => ({
         mappings: true,
-        addsProducts: true,
         mode: null,
     }),
 
@@ -178,9 +177,5 @@ export default {
                 }
             }
         }
-    }
-
-    .line-mode.vue-filter .tabs-wrapper {
-        padding: 0;
     }
 </style>

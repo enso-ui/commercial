@@ -208,17 +208,17 @@ export default {
         name() {
             return this.isProduct
                 ? this.line.product.name
-                : this.line.service.name
+                : this.line.service.name;
         },
         code() {
             return this.isProduct
                 ? this.line.product.partNumber
-                : this.line.service.partNumber
+                : this.line.service.code;
         },
         stock() {
             return this.isProduct
                 ? this.line.product.stockQuantity
-                : ''
+                : '';
         },
         lines() {
             return this.order.lines;
