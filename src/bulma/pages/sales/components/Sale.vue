@@ -92,7 +92,7 @@ export default {
                 this.form.field('invoice_id').value = invoice.id;
                 this.form.field('invoice').value = invoice;
                 this.form.field('invoice_emailed_at').value = null;
-                this.form.field('invoice_emailer').value = null;
+                this.form.field('invoiceEmailer').value = null;
                 this.updateVersion(version);
             }).catch(this.errorHandler);
         },
@@ -120,9 +120,9 @@ export default {
                 ), { version: this.version },
             ).then(({ data }) => {
                 this.order.processing = false;
-                const { invoice_emailed_at, invoice_emailer, version } = data;
+                const { invoice_emailed_at, invoiceEmailer, version } = data;
                 this.form.field('invoice_emailed_at').value = invoice_emailed_at;
-                this.form.field('invoice_emailer').value = invoice_emailer;
+                this.form.field('invoiceEmailer').value = invoiceEmailer;
                 this.form.field('version').value = version;
             }).catch((error) => {
                 this.order.processing = false;

@@ -186,7 +186,7 @@ export default {
             return this.order.form.field('invoice_emailed_at').value;
         },
         invoiceEmailer() {
-            return this.order.form.field('invoice_emailer').value;
+            return this.order.form.field('invoiceEmailer').value;
         },
         canCancelInvoice() {
             return this.canAccess(`commercial.${this.type}s.invoices.cancel`)
