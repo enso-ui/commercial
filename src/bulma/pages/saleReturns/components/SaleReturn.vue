@@ -94,7 +94,7 @@ export default {
             window.open(this.route(`commercial.${this.type}s.grn`, this.$route.params), '_blank');
         },
         downloadOffer(format = 'pdf') {
-            const uri = `${this.route(`commercial.${this.type}s.offer`, this.$route.params)  }?format=${format}`;
+            const uri = this.route(`commercial.${this.type}s.offer`, this.$route.params) + `?format=${format}`;
             window.open(uri, '_blank');
         },
         downloadInvoice() {
