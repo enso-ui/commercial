@@ -44,7 +44,9 @@
                     :name="i18n('User')"
                     v-model="filters.purchases.created_by"/>
             </div>
+            <slot name="filters"/>
         </div>
+
         <filter-state :api-version="apiVersion"
             name="purchase_filters"
             :filters="filters"

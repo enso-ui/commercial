@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <div class="controls has-text-right">
+                <div class="actions has-text-right">
                     <button class="button is-naked"
                         :class="{ 'has-text-danger': hasIns() }"
                         v-tooltip="i18n('Remove from stock')"
@@ -75,7 +75,7 @@
         </div>
         <div class="columns">
             <div class="column">
-                <div class="controls has-text-right">
+                <div class="actions has-text-right">
                     <button class="button is-naked"
                         v-tooltip="i18n('Download delivery note')"
                         @click="downloadDeliveryNote"

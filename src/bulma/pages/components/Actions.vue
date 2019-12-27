@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss">
-    .controls {
+    .actions {
         margin-top: 2em;
     }
 </style>
