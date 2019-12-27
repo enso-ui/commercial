@@ -1,11 +1,14 @@
 <template>
     <div class="wrapper">
-        <a class="button quick-view-control is-pulled-right"
-            @click="quickView = true">
-            <span class="icon is-large">
-                <fa icon="ellipsis-h"/>
-            </span>
-        </a>
+        <div class="quick-view-control is-pulled-right">
+            <slot name="actions"/>
+            <a class="button"
+               @click="quickView = true">
+                <span class="icon is-large">
+                    <fa icon="ellipsis-h"/>
+                </span>
+            </a>
+        </div>
         <enso-form disable-state
             @ready="
                 order.form = $event.form;
@@ -60,7 +63,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import {
     QuickView, Accessories, Comments, Documents,
 } from '@enso-ui/accessories/bulma';
-import { Tab } from '@enso-ui/tabs/bulma'
+import { Tab } from '@enso-ui/tabs/bulma';
 import { EnsoForm } from '@enso-ui/forms/bulma';
 import format from '@enso-ui/ui/src/modules/plugins/date-fns/format';
 import FormContent from './FormContent.vue';

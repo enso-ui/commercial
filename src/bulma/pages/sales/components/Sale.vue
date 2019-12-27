@@ -1,5 +1,8 @@
 <template>
     <order ref="order">
+        <template v-slot:actions>
+            <slot name="actions"/>
+        </template>
         <cancel-invoice :show="order.cancelInvoiceModal"
             @confirm="cancelInvoice"
             @close="order.cancelInvoiceModal = false"

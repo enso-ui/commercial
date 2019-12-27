@@ -1,5 +1,9 @@
 <template>
-    <order ref="order"/>
+    <order ref="order">
+        <template v-slot:actions>
+            <slot name="actions"/>
+        </template>
+    </order>
 </template>
 
 <script>
