@@ -61,7 +61,12 @@
             :filters="filters"
             :params="params"
             @create="create"
-            @reset="$refs.filterState.reset()"/>
+            @reset="$refs.filterState.reset()">
+            <template v-slot:row-actions="props">
+                <slot name="row-actions"
+                      v-bind="props"/>
+            </template>
+        </enso-table>
     </div>
 </template>
 
