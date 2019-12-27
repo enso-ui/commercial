@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="controls is-pulled-right">
-            <slot name="actions"/>
+            <slot name="controls"/>
             <a class="button"
                @click="quickView = true">
                 <span class="icon is-large">

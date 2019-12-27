@@ -1,7 +1,7 @@
 <template>
     <order ref="order">
-        <template v-slot:actions>
-            <slot name="actions"/>
+        <template v-slot:controls>
+            <slot name="controls"/>
         </template>
         <cancel-invoice :show="order.cancelInvoiceModal"
             @confirm="cancelInvoice"

@@ -1,7 +1,7 @@
 <template>
     <purchase class="box has-background-light raises-on-hover">
-        <template v-slot:actions>
-            <slot name="actions"/>
+        <template v-slot:controls>
+            <slot name="controls"/>
         </template>
     </purchase>
 </template>
