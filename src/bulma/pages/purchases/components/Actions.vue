@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <div class="controls has-text-right">
+                <div class="actions has-text-right">
                     <button class="button is-naked"
                         v-tooltip="i18n('Insert in stock')"
                         :disabled="processing()"
@@ -73,7 +73,7 @@
         </div>
         <div class="columns">
             <div class="column">
-                <div class="controls has-text-right">
+                <div class="actions has-text-right">
                     <button class="button is-naked"
                         v-tooltip="i18n('Download goods received note')"
                         :disabled="processing()"
