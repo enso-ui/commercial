@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="quick-view-control is-pulled-right">
+        <div class="order-controls is-pulled-right">
             <slot name="actions"/>
             <a class="button"
                @click="quickView = true">
@@ -252,7 +252,7 @@ export default {
     .wrapper {
         position: relative;
 
-        .quick-view-control {
+        .order-controls {
             z-index: 3;
             position: absolute;
             top: .3em;
