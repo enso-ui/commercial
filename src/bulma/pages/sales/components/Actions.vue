@@ -211,7 +211,7 @@ export default {
         'insertable', 'removable', 'fullyReserved', 'createDifferencesSale', 'issueProforma',
         'issueInvoice', 'hasProforma', 'hasInvoice', 'hasPayment', 'emailInvoice',
         'downloadOffer', 'downloadStockRemoval', 'downloadDeliveryNote',
-        'downloadInvoice', 'downloadPayment',
+        'downloadInvoice', 'downloadPayment', 'formatDateTime'
     ],
 
     computed: {
@@ -238,11 +238,13 @@ export default {
         },
         emailTooltip() {
             if (this.invoiceEmailedAt && this.invoiceEmailer) {
-                return `${this.i18n('Invoice emailed by')} ${this.invoiceEmailer.person.name} @ ${this.invoiceEmailedAt}`;
+                const time = this.formatDateTime(this.invoiceEmailedAt);
+                return `${this.i18n('Invoice emailed by')} ${this.invoiceEmailer.person.name} @ ${time}`;
             }
 
+            const time = this.formatDateTime(this.emailedAt());
             return this.emailedAt() && this.emailer()
-                ? `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${this.emailedAt()}`
+                ? `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${time}`
                 : null;
         },
     },

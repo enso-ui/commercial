@@ -94,7 +94,7 @@ export default {
     }),
 
     computed: {
-        ...mapState(['enums']),
+        ...mapState(['enums','preferences']),
         form() {
             return this.order.form;
         },
@@ -218,6 +218,10 @@ export default {
         emailer() {
             return this.form.field('emailer').value;
         },
+        formatDateTime(stringDate) {
+            const date = new Date(stringDate);
+            return date.toLocaleString(this.preferences.global.lang);
+        }
     },
 
     provide() {
@@ -241,6 +245,7 @@ export default {
             loadMore: this.loadMore,
             emailedAt: this.emailedAt,
             emailer: this.emailer,
+            formatDateTime: this.formatDateTime,
         };
     },
 };
