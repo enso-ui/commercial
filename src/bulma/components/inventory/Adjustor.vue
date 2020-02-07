@@ -99,6 +99,7 @@ export default {
 
                     if (status === 422) {
                         this.errors.set(data.errors);
+                        this.loading = false;
                         return;
                     }
 
