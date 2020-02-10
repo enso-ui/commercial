@@ -6,19 +6,19 @@
                 <client-filter :params="params"
                     :filters="filters.sale_returns"/>
             </div>
-            <div class="column is-narrow">
-                <enso-date-filter class="box raises-on-hover"
-                    v-model="params.dateInterval"
-                    default="thirtyDays"
-                    :name="i18n('Date')"
-                    :interval="intervals"/>
-            </div>
-            <div class="column is-4-desktop is-3-widescreen">
+            <div class="column is-3">
                 <enso-select-filter class="box raises-on-hover"
                     source="products.options"
                     disable-filtering
                     :name="i18n('Product')"
                     v-model="params.productId"/>
+            </div>
+            <div class="column is-3">
+                <enso-select-filter class="box raises-on-hover"
+                    source="administration.users.options"
+                    label="person.name"
+                    :name="i18n('User')"
+                    v-model="filters.sale_returns.created_by"/>
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
@@ -30,12 +30,12 @@
                     :name="i18n('Fulfilled')"
                     v-model="params.fulfilled"/>
             </div>
-            <div class="column is-4-desktop is-3-widescreen">
-                <enso-select-filter class="box raises-on-hover"
-                    source="administration.users.options"
-                    label="person.name"
-                    :name="i18n('User')"
-                    v-model="filters.sale_returns.created_by"/>
+            <div class="column is-narrow">
+                <enso-date-filter class="box raises-on-hover"
+                    v-model="params.dateInterval"
+                    default="thirtyDays"
+                    :name="i18n('Date')"
+                    :interval="intervals"/>
             </div>
         </div>
 
