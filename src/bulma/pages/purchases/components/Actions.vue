@@ -106,7 +106,7 @@
                             {'has-text-danger': !order.partner.email},
                             {'has-text-success': emailedAt()},
                         ]"
-                        v-tooltip="emailedAt() ? `${emailer().person.name} / ${emailedAt()}` : null"
+                        v-tooltip="emailTooltip"
                         :disabled="!order.partner.email || processing() || fulfilling()"
                         @click="email"
                         v-if="order.partner && allOrdered()">
@@ -143,13 +143,21 @@ export default {
         'canAccess', 'i18n', 'order', 'email', 'toggleFulfilling', 'toggleLock', 'fulfilling',
         'allOrdered', 'processing', 'finalized', 'emailedAt', 'emailer', 'insertInStock',
         'undoStockInsertion', 'allInStock', 'someInStock', 'insertable', 'downloadOrder',
-        'downloadGrn',
+        'downloadGrn', 'formatDateTime'
     ],
 
     computed: {
         form() {
             return this.order.form;
         },
+        emailTooltip() {
+            if(! this.emailedAt()) {
+                return null;
+            }
+
+            const time = this.formatDateTime(this.emailedAt());
+            return `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${time}`;
+        }
     },
 };
 </script>
