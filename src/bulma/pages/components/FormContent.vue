@@ -22,8 +22,8 @@
                                 :field="form.field('number')"/>
                         </div>
                         <div class="column is-narrow">
-                            <form-field :field="form.field('supplier_number')"
-                                v-bind="$attrs"
+                            <form-field v-bind="$attrs"
+                                :field="form.field('supplier_number')"
                                 v-if="[enums.orders.Purchase, enums.orders.PurchaseReturn]
                                     .includes(form.param('type'))"/>
                         </div>
