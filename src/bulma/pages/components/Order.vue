@@ -131,6 +131,10 @@ export default {
                 .forEach(attribute => (this.form
                     .field(attribute).value = order[attribute]));
         },
+        reloadOrder(order) {
+            this.form.fetch();
+            this.$refs.lines.fetch();
+        },
         email() {
             this.order.processing = true;
 
@@ -227,6 +231,7 @@ export default {
     provide() {
         return {
             updateOrder: this.updateOrder,
+            reloadOrder: this.reloadOrder,
             email: this.email,
             toggleFulfilling: this.toggleFulfilling,
             toggleLock: this.toggleLock,

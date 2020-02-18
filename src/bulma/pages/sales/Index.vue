@@ -36,11 +36,6 @@
                     v-model="params.fulfilled"/>
             </div>
             <div class="column is-narrow">
-                <boolean-filter class="box raises-on-hover"
-                    :name="i18n('Emag')"
-                    v-model="params.emag"/>
-            </div>
-            <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
                     default="thirtyDays"
