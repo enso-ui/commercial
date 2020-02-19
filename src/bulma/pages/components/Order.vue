@@ -17,15 +17,16 @@
             @error="order.form.fetch()"
             @submit="form.field('version').value = $event.version"
             ref="order">
-            <template v-slot:general="{ sectionBindings }"
+            <template v-slot:general
                 v-if="order.form">
                 <form-content/>
             </template>
         </enso-form>
-        <quick-view
-            @close="quickView = false"
+        <quick-view @close="quickView = false"
             v-if="quickView">
-            <p class="title is-5">{{i18n('Accessories')}}</p>
+            <p class="title is-5">
+                {{ i18n('Accessories') }}
+            </p>
             <accessories class="has-margin-top-medium">
                 <template slot-scope="{ count }">
                     <tab keep-alive
@@ -94,7 +95,7 @@ export default {
     }),
 
     computed: {
-        ...mapState(['enums','preferences']),
+        ...mapState(['enums', 'preferences']),
         form() {
             return this.order.form;
         },
@@ -225,7 +226,7 @@ export default {
         formatDateTime(stringDate) {
             const date = new Date(stringDate);
             return date.toLocaleString(this.preferences.global.lang);
-        }
+        },
     },
 
     provide() {
