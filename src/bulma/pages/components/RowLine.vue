@@ -50,9 +50,9 @@
                     v-select-on-focus
                     :readonly="fulfilling() || line.processing"
                     @input="errors.clear('discountPercent'); update()">
-                <span class="icon is-small is-right">
+                <span class="icon is-right has-margin-top-small">
                     <fa icon="percentage"
-                        size="xs"/>
+                        size="sm"/>
                 </span>
             </p>
             <p class="help is-danger has-text-centered"
@@ -397,24 +397,16 @@ export default {
         td {
             vertical-align: middle;
 
-            &.price {
-                width: 7em;
-            }
-
-            &.discount {
-                width: 5em;
-            }
-
-            &.quantity {
-                width: 4.8em;
-            }
-
             .position {
                 min-width: 10.2em;
             }
 
             .input {
                 width: 4.8em;
+
+                &.discount {
+                    width: 5.7em;
+                }
             }
 
             .tag {
