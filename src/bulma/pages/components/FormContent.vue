@@ -46,9 +46,9 @@ import Actions from './Actions.vue';
 export default {
     name: 'FormContent',
 
-    components: { Partners, Actions, FormField },
+    components: { Actions, FormField, Partners, },
 
-    inject: ['i18n', 'order', 'hasLines'],
+    inject: ['order', 'hasLines'],
 
     computed: {
         ...mapState(['enums']),
@@ -68,6 +68,7 @@ export default {
             immediate: true,
         },
     },
+
 };
 </script>
 
