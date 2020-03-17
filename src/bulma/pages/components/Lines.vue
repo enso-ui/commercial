@@ -149,6 +149,15 @@ export default {
                 this.order.processing = false;
             }).catch((error) => {
                 this.order.processing = false;
+
+                const { status, data } = error.response;
+
+                if (status === 409) {
+                    this.$toastr.warning(data.message);
+                    this.fetch();
+                    return;
+                }
+
                 this.errorHandler(error);
             });
 
