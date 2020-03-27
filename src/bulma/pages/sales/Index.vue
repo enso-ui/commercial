@@ -38,7 +38,6 @@
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.dateInterval"
-                    default="thirtyDays"
                     :name="i18n('Date')"
                     :interval="intervals"/>
             </div>
@@ -90,7 +89,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.1,
+            apiVersion: 1.2,
             ready: false,
             filters: {
                 sales: {
@@ -108,7 +107,7 @@ export default {
                 client: null,
                 emag: null,
                 productId: null,
-                dateInterval: 'thirtyDays',
+                dateInterval: 'thisMonth',
             },
         };
     },
