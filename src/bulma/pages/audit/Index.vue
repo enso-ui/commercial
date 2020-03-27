@@ -40,7 +40,6 @@
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.sales.dateInterval"
-                    default="thirtyDays"
                     :name="i18n('Date')"
                     :interval="intervals.sales.date"/>
             </div>
@@ -74,7 +73,6 @@
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
                     v-model="params.purchases.dateInterval"
-                    default="thirtyDays"
                     :name="i18n('Date')"
                     :interval="intervals.purchases.date"/>
             </div>
@@ -133,7 +131,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.5,
+            apiVersion: 1.6,
             ready: false,
             filters: {
                 client_stocks: {
@@ -162,10 +160,10 @@ export default {
             params: {
                 client: null,
                 sales: {
-                    dateInterval: 'thirtyDays',
+                    dateInterval: 'thisMonth',
                 },
                 purchases: {
-                    dateInterval: 'thirtyDays',
+                    dateInterval: 'thisMonth',
                 },
 
             },
