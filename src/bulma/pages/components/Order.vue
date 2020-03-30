@@ -64,7 +64,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import {
     Accessories, Comments, Documents,
 } from '@enso-ui/accessories/bulma';
-import { QuickView } from '@enso-ui/quick-view/bulma';
+import QuickView from '@enso-ui/quick-view/bulma';
 import { Tab } from '@enso-ui/tabs/bulma';
 import { EnsoForm } from '@enso-ui/forms/bulma';
 import format from '@enso-ui/ui/src/modules/plugins/date-fns/format';
