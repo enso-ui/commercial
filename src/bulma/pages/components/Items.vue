@@ -15,8 +15,6 @@
                             <template v-slot:option="{ item, highlight }">
                                 <p v-html="highlight(item.name)"/>
                                 <p v-html="highlight(item.partNumber)"/>
-                                <p v-html="highlight(item.author)"/>
-                                <p v-html="highlight(item.publisher.name)" v-if="item.publisher"/>
                                 <p>
                                     <span class="icon is-small has-text-info">
                                         <fa icon="dollar-sign"
