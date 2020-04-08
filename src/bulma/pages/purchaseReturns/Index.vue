@@ -75,7 +75,7 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.2,
+            apiVersion: 1.3,
             ready: false,
             filters: {
                 purchase_returns: {
