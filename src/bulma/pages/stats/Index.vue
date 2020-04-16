@@ -24,7 +24,8 @@
                     <div class="column"
                         v-for="dataset in config.data.datasets"
                         :key="dataset.label">
-                        <info-panel :dataset="dataset"/>
+                        <info-panel short-numbers
+                            :dataset="dataset"/>
                     </div>
                 </div>
             </template>
