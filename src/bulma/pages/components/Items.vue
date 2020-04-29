@@ -15,7 +15,7 @@
                             <template v-slot:option="{ item, highlight }">
                                 <article class="media has-vertically-centered-content">
                                     <figure class="media-left">
-                                        <p class="image is-64x64">
+                                        <p class="image is-64x64 has-vertically-centered-content">
                                             <img :src="route('core.files.show', item.picture.file.id)"
                                                 v-if="item.picture">
                                             <img src="/images/not-available-circle.svg"
