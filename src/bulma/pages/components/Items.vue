@@ -13,31 +13,41 @@
                             v-if="mode === enums.lineItems.Product"
                             ref="typeahead">
                             <template v-slot:option="{ item, highlight }">
-                                <p v-html="highlight(item.name)"/>
-                                <p v-html="highlight(item.partNumber)"/>
-                                <p>
-                                    <span class="icon is-small has-text-info">
-                                        <fa icon="dollar-sign"
-                                            size="xs"/>
-                                    </span>
-                                    :
-                                    <strong>{{ item.price }}</strong>
-                                    <span class="icon is-small"
-                                        :class="
-                                            item.quantity ? 'has-text-success' : 'has-text-danger'
-                                        ">
-                                        <fa icon="inventory"
-                                            size="xs"/>
-                                    </span>
-                                    :
-                                    <strong>{{ item.quantity }}</strong>
-                                    <span class="icon is-small has-text-info">
-                                        <fa icon="hand-paper"
-                                            size="xs"/>
-                                    </span>
-                                    :
-                                    <strong>{{ item.reservedQuantity }}</strong>
-                                </p>
+                                <article class="media has-vertically-centered-content">
+                                    <figure class="media-left">
+                                        <p class="image is-64x64 has-vertically-centered-content">
+                                            <img :src="route('core.files.show', item.picture.file.id)"
+                                                v-if="item.picture">
+                                            <img src="/images/not-available-circle.svg"
+                                                v-else>
+                                        </p>
+                                    </figure>
+                                    <div class="media-content has-padding-left-medium">
+                                        <p v-html="highlight(item.name)"/>
+                                        <p v-html="highlight(item.partNumber)"/>
+                                        <p>
+                                            <span class="icon is-small has-text-info">
+                                                <fa icon="ron-sign"
+                                                    size="xs"/>
+                                            </span>
+                                            :
+                                            <strong>{{ item.price }}</strong>
+                                            <span class="icon is-small"
+                                                  :class="item.quantity ? 'has-text-success' : 'has-text-danger'">
+                                                <fa icon="inventory"
+                                                    size="xs"/>
+                                            </span>
+                                            :
+                                            <strong>{{ item.quantity }}</strong>
+                                            <span class="icon is-small has-text-info">
+                                                <fa icon="hand-paper"
+                                                    size="xs"/>
+                                            </span>
+                                            :
+                                            <strong>{{ item.reservedQuantity }}</strong>
+                                        </p>
+                                    </div>
+                                </article>
                             </template>
                         </enso-typeahead>
                         <enso-typeahead class="product-selector"
@@ -88,7 +98,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faInventory } from '@fortawesome/pro-solid-svg-icons';
 
-library.add(faDollarSign, faInventory, faHandPaper, faProjectDiagram, faHandshake);
+const faRonSign = {
+    prefix: 'fas',
+    iconName: 'ron-sign',
+    icon: [100, 100, [], 'e001', 'M 10 5 L 10 100 L 85 100 L 85 85 L 25 85 L 25 5 Z'],
+};
+
+library.add(faRonSign, faInventory, faHandPaper, faProjectDiagram, faHandshake);
 
 export default {
     name: 'Items',
@@ -97,7 +113,7 @@ export default {
 
     components: { EnsoTypeahead },
 
-    inject: ['i18n', 'order'],
+    inject: ['i18n', 'order', 'route'],
 
     data: () => ({
         mappings: true,
@@ -162,9 +178,19 @@ export default {
     .product-selector.dropdown.typeahead {
         .dropdown-menu {
             .dropdown-content {
-                .options {
-                    .image {
-                        min-width: 64px;
+                .items {
+                    max-height: 23.8em;
+
+                    .image.is-64x64 {
+                        width: 64px;
+                        height: 64px;
+
+                        img {
+                            width: auto;
+                            height: auto;
+                            max-width: 64px;
+                            max-height: 64px;
+                        }
                     }
 
                     .media-content {
