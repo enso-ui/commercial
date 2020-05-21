@@ -31,7 +31,7 @@
                     <select-field :errors="form.errors"
                         :i18n="i18n"
                         :field="form.field('address_id')"
-                        :custom-params="addressParams"
+                        :params="addressParams"
                         @changed="form.submit()"/>
                 </div>
             </div>
