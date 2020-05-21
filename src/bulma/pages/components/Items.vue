@@ -182,9 +182,6 @@ export default {
                     max-height: 23.8em;
 
                     .image.is-64x64 {
-                        width: 64px;
-                        height: 64px;
-
                         img {
                             width: auto;
                             height: auto;
