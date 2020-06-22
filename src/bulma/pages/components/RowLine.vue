@@ -165,7 +165,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faTrashAlt, faPercentage, faUpload, faDownload, faEnvelope, faHandPaper,
 } from '@fortawesome/free-solid-svg-icons';
-import Errors from '@enso-ui/forms/src/classes/Errors';
+import Errors from '@enso-ui/laravel-validation';
 import OrderReservations from './OrderReservations.vue';
 
 
