@@ -58,7 +58,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core/index.js';
 import { faSync, faBan, faCheck } from '@fortawesome/free-solid-svg-icons/index.js';
 import { selectOnFocus } from '@enso-ui/directives';
-import Errors from '@enso-ui/forms/src/classes/Errors';
+import Errors from '@enso-ui/laravel-validation';
 
 library.add(faSync, faBan, faCheck);
 
@@ -94,7 +94,7 @@ export default {
                     this.quantity = null;
                     this.$emit('adjusted');
                 })
-                .catch((error) => {
+                .catch(error => {
                     const { status, data } = error.response;
 
                     if (status === 422) {
@@ -109,7 +109,7 @@ export default {
         updateAdjustmentOrders() {
             this.loading = true;
             axios.post(this.route('inventory.updateAdjustmentOrders'))
-                .then(({data}) => {
+                .then(({ data }) => {
                     this.loading = false;
                     this.$toastr.info(data.message);
                 })

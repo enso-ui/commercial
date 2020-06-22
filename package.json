@@ -29,6 +29,7 @@
     "@enso-ui/financials": "1.4.x",
     "@enso-ui/forms": "1.4.x",
     "@enso-ui/inventory": "1.3.x",
+    "@enso-ui/laravel-validation": "1.0.x",
     "@enso-ui/loader": "1.0.x",
     "@enso-ui/modal": "1.0.x",
     "@enso-ui/select": "1.2.x",
