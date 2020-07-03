@@ -1,6 +1,5 @@
 <template>
-    <modal show
-        portal="payment-modal"
+    <modal portal="payment-modal"
         v-on="$listeners">
         <enso-form class="box has-background-light payment-form"
             disable-state

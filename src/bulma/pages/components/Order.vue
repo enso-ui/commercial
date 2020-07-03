@@ -89,7 +89,7 @@ export default {
         Documents,
     },
 
-    inject: ['errorHandler', 'i18n', 'route', 'order'],
+    inject: ['errorHandler', 'i18n', 'route', 'order', 'toastr'],
 
     data: () => ({
         quickView: false,
@@ -121,9 +121,9 @@ export default {
                 this.$route.params,
             )).then(({ data }) => {
                 this.order.processing = false;
-                this.$toastr.success(data.message);
+                this.toastr.success(data.message);
                 this.$router.push({ name: data.redirect });
-            }).catch((error) => {
+            }).catch(error => {
                 this.order.processing = false;
                 this.errorHandler(error);
             });
@@ -151,7 +151,7 @@ export default {
                 this.form.field('emailed_at').value = emailed_at;
                 this.form.field('emailer').value = emailer;
                 this.form.field('version').value = version;
-            }).catch((error) => {
+            }).catch(error => {
                 this.order.processing = false;
                 this.errorHandler(error);
             });
@@ -258,7 +258,6 @@ export default {
 };
 
 </script>
-
 
 <style lang="scss">
     .wrapper {

@@ -67,7 +67,7 @@ export default {
 
     directives: { selectOnFocus },
 
-    inject: ['errorHandler', 'i18n', 'route', 'canAccess'],
+    inject: ['errorHandler', 'i18n', 'route', 'canAccess', 'toastr'],
 
     props: {
         productId: {
@@ -111,7 +111,7 @@ export default {
             axios.post(this.route('inventory.updateAdjustmentOrders'))
                 .then(({ data }) => {
                     this.loading = false;
-                    this.$toastr.info(data.message);
+                    this.toastr.info(data.message);
                 })
                 .catch(this.errorHandler);
         },

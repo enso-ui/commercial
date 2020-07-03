@@ -168,7 +168,6 @@ import {
 import Errors from '@enso-ui/laravel-validation';
 import OrderReservations from './OrderReservations.vue';
 
-
 library.add(faTrashAlt, faPercentage, faUpload, faDownload, faEnvelope, faHandPaper);
 
 export default {
@@ -177,7 +176,7 @@ export default {
     inject: [
         'i18n', 'route', 'order', 'fulfilling', 'finalized', 'processing',
         'hasIns', 'hasOuts', 'errorHandler', 'updateOrder', 'version',
-        'chainRequest',
+        'chainRequest', 'toastr',
     ],
 
     directives: { selectOnFocus },
@@ -356,7 +355,7 @@ export default {
             }
 
             if (status === 409) {
-                this.$toastr.warning(data.message);
+                this.toastr.warning(data.message);
                 this.order.form.fetch();
                 this.$emit('version-error');
                 return;

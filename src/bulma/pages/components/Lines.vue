@@ -57,7 +57,7 @@ export default {
 
     inject: [
         'errorHandler', 'i18n', 'route', 'order', 'updateOrder', 'hasLines',
-        'version', 'fulfilling', 'loadMore',
+        'version', 'fulfilling', 'loadMore', 'toastr',
     ],
 
     components: {
@@ -147,13 +147,13 @@ export default {
                 this.lines.splice(0, 0, line);
                 this.order.lineCount++;
                 this.order.processing = false;
-            }).catch((error) => {
+            }).catch(error => {
                 this.order.processing = false;
 
                 const { status, data } = error.response;
 
                 if (status === 409) {
-                    this.$toastr.warning(data.message);
+                    this.toastr.warning(data.message);
                     this.fetch();
                     return;
                 }

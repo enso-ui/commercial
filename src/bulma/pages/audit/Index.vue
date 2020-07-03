@@ -127,7 +127,7 @@ export default {
         EnsoDateFilter, EnsoSelectFilter, EnsoTable, ImportUploader, ClientFilter, FilterState,
     },
 
-    inject: ['i18n', 'route'],
+    inject: ['i18n', 'route', 'toastr'],
 
     data() {
         return {
@@ -214,7 +214,7 @@ export default {
     methods: {
         openUploader() {
             if (!this.filters.client_stocks.company_id) {
-                this.$toastr.warning(this.i18n('Please select a client first'));
+                this.toastr.warning(this.i18n('Please select a client first'));
                 return;
             }
             this.$refs.uploader.browseFiles();

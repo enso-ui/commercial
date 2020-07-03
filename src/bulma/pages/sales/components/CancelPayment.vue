@@ -1,6 +1,5 @@
 <template>
-    <modal show
-        v-on="$listeners">
+    <modal v-on="$listeners">
         <div class="box">
             <h5 class="subtitle is-5">
                 {{ i18n("Do you want to cancel the payment?") }}
