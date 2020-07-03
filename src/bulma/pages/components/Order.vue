@@ -61,9 +61,7 @@
 import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import {
-    Accessories, Comments, Documents,
-} from '@enso-ui/accessories/bulma';
+import { Accessories, Comments, Documents } from '@enso-ui/bulma';
 import QuickView from '@enso-ui/quick-view/bulma';
 import { Tab } from '@enso-ui/tabs/bulma';
 import { EnsoForm } from '@enso-ui/forms/bulma';
