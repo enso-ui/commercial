@@ -8,7 +8,7 @@
                             source="commercial.products"
                             :params="params"
                             :paginate="10"
-                            @selected="$refs.typeahead.clear()"
+                            @selected="clear()"
                             v-on="$listeners"
                             v-if="mode === enums.lineItems.Product"
                             ref="typeahead">
@@ -170,6 +170,9 @@ export default {
                 ? this.enums.lineItems.Service
                 : this.enums.lineItems.Product;
         },
+        clear() {
+            setTimeout(() => this.$refs.typeahead.clear(), 500);
+        }
     },
 };
 </script>
