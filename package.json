@@ -1,6 +1,6 @@
 {
   "name": "@enso-ui/commercial",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Commercial operations package",
   "main": "index.js",
   "scripts": {
