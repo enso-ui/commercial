@@ -25,7 +25,7 @@
                              v-if="[enums.orders.Purchase, enums.orders.PurchaseReturn]
                                 .includes(form.param('type'))">
                             <form-field v-bind="$attrs"
-                                :field="form.field('supplier_number')"/>
+                                :field="form.field('supplier_order_reference')"/>
                         </div>
                     </div>
                 </div>
