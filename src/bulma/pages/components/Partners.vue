@@ -78,6 +78,7 @@ export default {
         },
         addressParams() {
             return this.order.partner && {
+                ...this.form.field('address_id').params,
                 addressable_id: this.order.partner.id,
                 addressable_type: this.type,
             };
