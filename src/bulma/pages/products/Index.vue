@@ -78,7 +78,7 @@ export default {
             productId: null,
             filters: {
                 products: {
-                    publisher_id: null,
+                    manufacturer_id: null,
                 },
             },
             intervals: {
