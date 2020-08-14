@@ -5,7 +5,7 @@
                 <div class="actions has-text-right">
                     <button class="button is-naked"
                         :class="{ 'has-text-danger': hasIns() }"
-                        v-tooltip="i18n('Remove from stock')"
+                        v-tooltip="i18n('Remove From Stock')"
                         :disabled="processing()"
                         @click="removeFromStock"
                         v-if="order.warehouse && removable()">
@@ -15,7 +15,7 @@
                     </button>
                     <button class="button is-naked"
                         :class="{ 'has-text-danger': hasOuts() }"
-                        v-tooltip="i18n('Undo stock removal')"
+                        v-tooltip="i18n('Undo Stock Removal')"
                         :disabled="processing()"
                         @click="undoStockRemoval"
                         v-if="order.warehouse && insertable()">
@@ -26,8 +26,8 @@
                     <button class="button is-naked"
                         v-tooltip="
                             order.warehouse
-                                ? i18n('Leave warehouse mode')
-                                : i18n('Enter warehouse mode')
+                                ? i18n('Leave Warehouse Mode')
+                                : i18n('Enter Warehouse Mode')
                         "
                         :disabled="processing()"
                         @click="order.warehouse = !order.warehouse"
@@ -38,7 +38,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Create differences sale')"
+                        v-tooltip="i18n('Create Differences Sale')"
                         :disabled="processing()"
                         @click="createDifferencesSale"
                         v-if="allOrdered() && !fullyReserved()">
@@ -49,8 +49,8 @@
                     <button class="button is-naked"
                         v-tooltip="
                             fulfilling()
-                                ? i18n('Leave fulfilling mode')
-                                : i18n('Enter fulfilling mode')
+                                ? i18n('Leave Fulfilling Mode')
+                                : i18n('Enter Fulfilling Mode')
                         "
                         :disabled="processing() || someRemovedFromStock() || order.warehouse"
                         @click="toggleFulfilling"
@@ -86,7 +86,7 @@
             <div class="column">
                 <div class="actions has-text-right">
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download delivery note')"
+                        v-tooltip="i18n('Download Delivery Note')"
                         @click="downloadDeliveryNote"
                         v-if="allRemovedFromStock()">
                         <span class="icon has-text-info">
@@ -94,7 +94,7 @@
                         </span>
                     </button>
                      <button class="button is-naked"
-                        v-tooltip="i18n('Issue payment')"
+                        v-tooltip="i18n('Issue Payment')"
                         @click="order.paymentModal = true"
                         v-if="allRemovedFromStock() && (hasInvoice() || hasProforma()) && !hasPayment()">
                             <span class="icon">
@@ -102,7 +102,7 @@
                             </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download payment (long click for cancel)')"
+                        v-tooltip="i18n('Download Payment (long click for cancel)')"
                         v-long-click:1500="cancelPayment"
                         key="payment"
                         @click="downloadPayment"
@@ -112,7 +112,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Issue proforma')"
+                        v-tooltip="i18n('Issue Proforma')"
                         @click="issueProforma()"
                         v-if="allOrdered() && !hasProforma() && !hasInvoice()">
                         <span class="icon">
@@ -120,7 +120,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Issue invoice')"
+                        v-tooltip="i18n('Issue Invoice')"
                         @click="issueInvoice()"
                         v-if="allRemovedFromStock() && !hasInvoice()">
                         <span class="icon">
@@ -128,7 +128,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download invoice (long click for cancel)')"
+                        v-tooltip="i18n('Download Invoice (long click for cancel)')"
                         v-long-click:1500="cancelInvoice"
                         key="invoice"
                         @click="downloadInvoice"
@@ -138,7 +138,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download stock removal')"
+                        v-tooltip="i18n('Download Stock Removal')"
                         :disabled="processing()"
                         @click="downloadStockRemoval"
                         v-if="allOrdered() && !someRemovedFromStock()">
@@ -147,7 +147,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download sale offer')"
+                        v-tooltip="i18n('Download Sale Offer')"
                         :disabled="processing()"
                         @click="downloadOffer('pdf')"
                         v-if="allOrdered()">
@@ -156,7 +156,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download excel sale offer')"
+                        v-tooltip="i18n('Download Excel Sale Offer')"
                         :disabled="processing()"
                         @click="downloadOffer('xlsx')"
                         v-if="allOrdered()">

@@ -4,7 +4,7 @@
             <div class="column">
                 <div class="actions has-text-right">
                     <button class="button is-naked"
-                        v-tooltip="i18n('Insert in stock')"
+                        v-tooltip="i18n('Insert in Stock')"
                         :disabled="processing()"
                         @click="insertInStock"
                         v-if="order.warehouse && insertable()">
@@ -13,7 +13,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Undo stock insertion')"
+                        v-tooltip="i18n('Undo Stock Insertion')"
                         :disabled="processing()"
                         @click="undoStockInsertion"
                         v-if="!finalized() && order.warehouse && someInStock()">
@@ -24,8 +24,8 @@
                     <button class="button is-naked"
                         v-tooltip="
                             order.warehouse
-                                ? i18n('Leave warehouse mode')
-                                : i18n('Enter warehouse mode')
+                                ? i18n('Leave Warehouse Mode')
+                                : i18n('Enter Warehouse Mode')
                         "
                         :disabled="processing()"
                         @click="order.warehouse = !order.warehouse"
@@ -38,8 +38,8 @@
                     <button class="button is-naked"
                         v-tooltip="
                             fulfilling()
-                                ? i18n('Leave fulfilling mode')
-                                : i18n('Enter fulfilling mode')
+                                ? i18n('Leave Fulfilling Mode')
+                                : i18n('Enter Fulfilling Mode')
                         "
                         :disabled="processing() || someInStock() || order.warehouse"
                         @click="toggleFulfilling"
@@ -75,7 +75,7 @@
             <div class="column">
                 <div class="actions has-text-right">
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download goods received note')"
+                        v-tooltip="i18n('Download Goods Received Note')"
                         :disabled="processing()"
                         @click="downloadGrn"
                         v-if="fulfilling()">
@@ -84,7 +84,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Issue invoice')"
+                        v-tooltip="i18n('Issue Invoice')"
                         @click="issueInvoice()"
                         v-if="allOrdered() && !hasInvoice()">
                         <span class="icon">
@@ -100,7 +100,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download invoice (long click for cancel)')"
+                        v-tooltip="i18n('Download Invoice (long click for cancel)')"
                         v-long-click:1500="cancelInvoice"
                         key="invoice"
                         @click="downloadInvoice"
@@ -110,7 +110,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download sale return offer')"
+                        v-tooltip="i18n('Download Sale Return Offer')"
                         :disabled="processing()"
                         @click="downloadOffer('pdf')"
                         v-if="allOrdered()">
@@ -119,7 +119,7 @@
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="i18n('Download excel sale return offer')"
+                        v-tooltip="i18n('Download Excel Sale Return Offer')"
                         :disabled="processing()"
                         @click="downloadOffer('xlsx')"
                         v-if="allOrdered()">
