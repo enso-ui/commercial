@@ -79,13 +79,13 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.3,
+            apiVersion: 1.4,
             ready: false,
             filters: {
                 sale_returns: {
-                    is_finalized: null,
                     person_id: null,
                     company_id: null,
+                    is_finalized: null,
                 },
             },
             intervals: {
@@ -94,9 +94,9 @@ export default {
             },
             params: {
                 fulfilled: null,
-                client: null,
                 productId: null,
                 dateInterval: 'thisMonth',
+                client: null,
             },
         };
     },

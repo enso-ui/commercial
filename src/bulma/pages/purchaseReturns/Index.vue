@@ -75,11 +75,13 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.3,
+            apiVersion: 1.4,
             ready: false,
             filters: {
                 purchase_returns: {
                     supplier_id: null,
+                    created_by: null,
+                    is_finalized: null,
                 },
             },
             intervals: {

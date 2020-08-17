@@ -89,13 +89,15 @@ export default {
 
     data() {
         return {
-            apiVersion: 1.3,
+            apiVersion: 1.4,
             ready: false,
             filters: {
                 sales: {
                     person_id: null,
                     company_id: null,
                     created_by: null,
+                    is_finalized: null,
+                    is_loss: null,
                 },
             },
             intervals: {
@@ -104,10 +106,11 @@ export default {
             },
             params: {
                 fulfilled: null,
-                client: null,
-                emag: null,
                 productId: null,
                 dateInterval: 'thisMonth',
+                client: null,
+                emag: null,
+                webshop: null,
             },
         };
     },
