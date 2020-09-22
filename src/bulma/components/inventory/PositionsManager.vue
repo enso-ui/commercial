@@ -14,7 +14,8 @@
                 {{ i18n('Position Manager') }}
             </template>
             <template v-slot:controls>
-                <card-control>
+                <card-control
+                    v-if="canAccess('inventory.adjust')">
                     <span class="icon is-small">
                         <button class="button is-naked"
                             :class="{ 'has-text-success': adjustMode }"
