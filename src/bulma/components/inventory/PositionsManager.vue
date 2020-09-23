@@ -67,7 +67,7 @@ export default {
         CardControl,
     },
 
-    inject: ['errorHandler', 'i18n'],
+    inject: ['errorHandler', 'i18n', 'canAccess'],
 
     props: {
         productId: {
