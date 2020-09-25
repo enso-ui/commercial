@@ -158,7 +158,7 @@ export default {
             const field = this.form.field(this.form.param('fulfillingAttribute'));
 
             field.value = field.value
-                ? null
+                ? ''
                 : format(new Date(), 'Y-m-d H:i:s');
 
             this.form.submit();
@@ -173,7 +173,7 @@ export default {
         },
         fulfilling() {
             return this.form
-             && this.form.field(this.form.param('fulfillingAttribute')).value !== null;
+                && this.form.field(this.form.param('fulfillingAttribute')).value;
         },
         noneOrdered() {
             return this.hasLines()
