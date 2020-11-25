@@ -6,3 +6,4 @@ npm-debug.log
 ._*
 yarn.lock
 yarn-error.log
+.npmrc

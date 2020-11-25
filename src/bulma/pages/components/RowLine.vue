@@ -159,7 +159,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
 import { selectOnFocus } from '@enso-ui/directives';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {

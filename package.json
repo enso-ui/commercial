@@ -25,13 +25,14 @@
     "@enso-ui/card": "^2.0",
     "@enso-ui/comments": "^1.0",
     "@enso-ui/data-import": "^2.0",
+    "@enso-ui/directives": "^1.0.16",
     "@enso-ui/discounts": "^2.0",
     "@enso-ui/documents": "^1.0",
     "@enso-ui/filters": "^2.0",
     "@enso-ui/financials": "^2.0",
     "@enso-ui/forms": "^2.0",
     "@enso-ui/inventory": "^2.0",
-    "@enso-ui/laravel-validation": "^1.0",
+    "@enso-ui/laravel-validation": "^1.1.0",
     "@enso-ui/loader": "^2.0",
     "@enso-ui/modal": "^2.0",
     "@enso-ui/select": "^2.0",
@@ -44,8 +45,10 @@
     "@fortawesome/free-brands-svg-icons": "^5.2.0",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/pro-solid-svg-icons": "^5.11.2",
+    "lodash": "^4.17.20",
     "v-tooltip": "^2.0.0-rc.32",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
