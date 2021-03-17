@@ -4,10 +4,10 @@
 </template>
 
 <script>
-import Purchase from '../purchases/components/Actions.vue';
-import Sale from '../sales/components/Actions.vue';
-import PurchaseReturn from '../purchaseReturns/components/Actions.vue';
-import SaleReturn from '../saleReturns/components/Actions.vue';
+import Purchase from '../purchases/components/Controls.vue';
+import Sale from '../sales/components/Controls.vue';
+import PurchaseReturn from '../purchaseReturns/components/Controls.vue';
+import SaleReturn from '../saleReturns/components/Controls.vue';
 
 export default {
     components: {

@@ -21,7 +21,8 @@
                 </div>
             </div>
             <div class="columns has-margin-top-medium"
-                 v-if="[enums.orders.Sale, enums.orders.SaleReturn].includes(form.param('type'))">
+                 v-if="[enums.orders.Sale, enums.orders.SaleReturn]
+                    .includes(form.param('type'))">
                 <div class="column is-narrow">
                     <label class="label has-margin-top-medium">
                         {{ i18n('Address') }}
@@ -53,35 +54,32 @@ export default {
 
     computed: {
         ...mapState(['enums']),
-        form() {
-            return this.order.form;
+        addressParams() {
+            return this.order.partner && {
+                is_shipping: true,
+                addressable_id: this.order.partner.id,
+                addressable_type: this.type,
+            };
         },
-        type() {
-            return this.$route.params.type === 'individual'
-                || this.form.param('partnerAttribute') === 'person_id'
-                ? 'person'
-                : 'company';
+        addressReadonly() {
+            return this.form.field('status')
+                .value === this.enums.orderStatuses.Finalized;
         },
         attribute() {
-            return this.$route.params.type === 'individual'
-                ? 'person_id'
-                : this.form.param('partnerAttribute');
+            return this.$route.params.type
+                ?? this.form.param('partnerAttribute');
+        },
+        form() {
+            return this.order.form;
         },
         partnerReadonly() {
             return this.order.lines.length > 0;
         },
-        addressReadonly() {
-            return this.form.field('is_finalized').value;
-        },
         partnerParams() {
             return { type: this.type };
         },
-        addressParams() {
-            return this.order.partner && {
-                ...this.form.field('address_id').params,
-                addressable_id: this.order.partner.id,
-                addressable_type: this.type,
-            };
+        type() {
+            return this.attribute.replace('_id', '');
         },
     },
 

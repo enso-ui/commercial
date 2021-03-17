@@ -30,7 +30,7 @@
                 :class="{'is-danger': errors.has('quantity')}"
                 v-model.number="line.quantity"
                 v-select-on-focus
-                :readonly="fulfilled || line.processing"
+                :readonly="fulfilling || line.processing"
                 :placeholder="i18n('qty')"
                 @input="errors.clear('quantity'); update()">
             <p class="help is-danger has-text-centered"
@@ -39,16 +39,16 @@
             </p>
         </td>
         <td class="is-numeric"
-            v-if="!fulfilled">
+            v-if="!fulfilling">
             {{ line.listPrice | numberFormat(2) }}
         </td>
-        <td v-if="!fulfilled">
+        <td v-if="!fulfilling">
             <p class="control has-icons-right has-text-right">
                 <input class="input is-numeric discount"
                     :class="{'is-danger': errors.has('discountPercent')}"
                     v-model.number="line.discountPercent"
                     v-select-on-focus
-                    :readonly="fulfilled || line.processing"
+                    :readonly="fulfilling || line.processing"
                     @input="errors.clear('discountPercent'); update()">
                 <span class="icon is-right has-margin-top-small">
                     <fa icon="percentage"
@@ -61,23 +61,23 @@
             </p>
         </td>
         <td class="is-numeric"
-            v-if="!fulfilled">
+            v-if="!fulfilling">
             {{ line.unitaryPrice | numberFormat(2) }}
         </td>
         <td class="is-numeric price"
-            v-if="!fulfilled">
+            v-if="!fulfilling">
             {{ line.amount | numberFormat(2) }}
         </td>
         <td class="is-numeric price"
-            v-if="!fulfilled">
+            v-if="!fulfilling">
             {{ line.vat | numberFormat(2) }}
         </td>
         <td class="has-text-right is-numeric price"
-            v-if="!fulfilled">
+            v-if="!fulfilling">
             {{ line.total | numberFormat(2) }}
         </td>
         <td class="has-text-centered"
-            v-if="fulfilled">
+            v-if="fulfilling">
             <div v-if="isProduct">
                 <div class="select"
                     v-if="positionSelector">
@@ -106,7 +106,7 @@
             </div>
         </td>
         <td class="has-text-centered"
-            v-if="fulfilled">
+            v-if="fulfilling">
             <input class="input position"
                 :class="{'is-danger': errors.has('position') || position && !validPosition}"
                 v-select-on-focus
@@ -125,7 +125,7 @@
         <td class="has-text-centered">
             <a class="button is-naked"
                :class="{'is-loading' : line.processing}"
-               v-if="!fulfilled || line.quantity === 0"
+               v-if="!fulfilling || line.quantity === 0"
                @click="destroy">
                 <span class="icon is-small">
                     <fa icon="trash-alt"
@@ -134,7 +134,7 @@
             </a>
             <a class="button is-naked"
                 :class="{'is-loading' : line.processing}"
-               v-if="isProduct && !finalized && fulfilled && notInStock"
+               v-if="isProduct && !finalized && fulfilling && notInStock"
                v-show="line.positionId"
                @click="insertInStock">
                 <span class="icon is-small"
@@ -145,7 +145,7 @@
             </a>
             <a class="button is-naked"
                :class="{'is-loading' : line.processing}"
-               v-if="isProduct && !finalized && fulfilled && !notInStock"
+               v-if="isProduct && !finalized && fulfilling && !notInStock"
                @click="removeFromStock">
                 <span class="icon is-small"
                     :class="{ 'has-text-danger': hasIns() }">
@@ -224,8 +224,8 @@ export default {
         lines() {
             return this.order.lines;
         },
-        fulfilled() {
-            return this.form.field('status').value === this.enums.orderStatuses.Fulfilled;
+        fulfilling() {
+            return this.form.field('status').value === this.enums.orderStatuses.Fulfilling;
         },
         type() {
             return this.form.param('type');

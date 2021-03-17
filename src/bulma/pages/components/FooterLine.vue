@@ -11,10 +11,10 @@
                     {{ field('quantity').value }}
                 </div>
             </td>
-            <td v-if="!fulfilled"/>
-            <td :colspan="fulfilled ? 2 : 4"/>
+            <td v-if="!fulfilling"/>
+            <td :colspan="fulfilling ? 2 : 4"/>
             <td class="has-text-right is-bold total-price"
-                v-if="!fulfilled">
+                v-if="!fulfilling">
                 {{ field('total').value | numberFormat(2) }}
             </td>
             <td/>
@@ -40,8 +40,8 @@ export default {
         field() {
             return this.order.form.field;
         },
-        fulfilled() {
-            return this.field('status').value === this.enums.orderStatuses.Fulfilled;
+        fulfilling() {
+            return this.field('status').value === this.enums.orderStatuses.Fulfilling;
         }
     },
 };

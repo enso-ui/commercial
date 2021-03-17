@@ -34,8 +34,8 @@
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :name="i18n('Fulfilled')"
-                    v-model="params.fulfilled"/>
+                    :name="i18n('Fulfilling')"
+                    v-model="params.fulfilling"/>
             </div>
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
@@ -101,7 +101,7 @@ export default {
                 max: null,
             },
             params: {
-                fulfilled: null,
+                fulfilling: null,
                 productId: null,
                 dateInterval: 'thisMonth',
             },

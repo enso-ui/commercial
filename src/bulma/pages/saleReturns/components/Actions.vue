@@ -1,143 +1,71 @@
 <template>
-    <div class="wrapper">
-        <div class="columns">
-            <div class="column">
-                <div class="actions has-text-right">
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Insert in Stock')"
-                        :disabled="processing()"
-                        @click="insertInStock"
-                        v-if="fulfilled && insertable()">
-                        <span class="icon">
-                            <fa icon="download"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Undo Stock Insertion')"
-                        :disabled="processing()"
-                        @click="undoStockInsertion"
-                        v-if="!finalized && fulfilled && someInStock()">
-                        <span class="icon has-text-danger">
-                            <fa icon="upload"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="fulfilled
-                            ? i18n('Leave Warehouse Mode')
-                            : i18n('Enter Warehouse Mode')"
-                        :disabled="processing()"
-                        v-if="fulfilled && allOrdered()">
-                        <span class="icon"
-                            :class="allInStock() ? 'has-text-success' : 'has-text-danger'">
-                            <fa icon="warehouse"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="fulfilled
-                            ? i18n('Leave fulfilled Mode')
-                            : i18n('Enter fulfilled Mode')"
-                        :disabled="processing() || someInStock() || fulfilled"
-                        @click="updateFulfilment(fulfilled ? 'cancel' : 'start')"
-                        v-if="allOrdered()">
-                        <span class="icon"
-                            :class="{'has-text-success': fulfilled}">
-                            <fa icon="box-open"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        :disabled="fulfilled || processing()"
-                        @click="order.deleteModal = true"
-                        v-if="
-                            canAccess(`commercial.${type}s.destroy`)
-                            && !fulfilled
-                        ">
-                        <span class="icon">
-                            <fa icon="trash-alt"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        :disabled="processing() || !allInStock() || !hasInvoice()"
-                        @click="toggleLock"
-                        v-if="fulfilled">
-                        <span class="icon">
-                            <fa :icon="finalized ? 'lock' : 'lock-open'"/>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="actions has-text-right">
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Download Goods Received Note')"
-                        :disabled="processing()"
-                        @click="downloadGrn"
-                        v-if="fulfilled">
-                        <span class="icon has-text-info">
-                            <fa icon="pallet-alt"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Issue Invoice')"
-                        @click="issueInvoice()"
-                        v-if="allOrdered() && !hasInvoice()">
-                        <span class="icon">
-                            <fa icon="file-invoice-dollar"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Issue proforma')"
-                        @click="issueProforma()"
-                        v-if="allOrdered() && !hasProforma() && !hasInvoice()">
-                        <span class="icon">
-                            <fa icon="file-invoice"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Download Invoice (long click for cancel)')"
-                        v-long-click:1500="cancelInvoice"
-                        key="invoice"
-                        @click="downloadInvoice"
-                        v-if="hasInvoice() || hasProforma()">
-                        <span class="icon has-text-info">
-                            <fa :icon="hasInvoice() ? 'file-invoice-dollar' : 'file-invoice'"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Download Sale Return Offer')"
-                        :disabled="processing()"
-                        @click="downloadOffer('pdf')"
-                        v-if="allOrdered()">
-                        <span class="icon has-text-info">
-                            <fa icon="file-pdf"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        v-tooltip="i18n('Download Excel Sale Return Offer')"
-                        :disabled="processing()"
-                        @click="downloadOffer('xlsx')"
-                        v-if="allOrdered()">
-                        <span class="icon has-text-info">
-                            <fa icon="file-spreadsheet"/>
-                        </span>
-                    </button>
-                    <button class="button is-naked"
-                        :class="[
-                            {'has-text-danger': !order.partner.email},
-                            {'has-text-success': emailedAt() && !hasInvoice() && !hasProforma() || invoiceEmailedAt},
-                        ]"
-                        v-tooltip="emailTooltip"
-                        :disabled="!order.partner.email || processing()"
-                        @click="hasInvoice() || hasProforma() ? emailInvoice() : email()"
-                        v-if="order.partner && allOrdered()">
-                        <span class="icon">
-                            <fa :icon="hasInvoice() || hasProforma() ? 'envelope-open-dollar' : 'envelope'"/>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="actions has-text-right">
+        <button class="button is-naked"
+            v-tooltip="i18n('Download Goods Received Note')"
+            :disabled="processing()"
+            @click="downloadGrn"
+            v-if="fulfilling">
+            <span class="icon has-text-info">
+                <fa icon="pallet-alt"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            v-tooltip="i18n('Issue Invoice')"
+            @click="issueInvoice()"
+            v-if="allOrdered() && !hasInvoice()">
+            <span class="icon">
+                <fa icon="file-invoice-dollar"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            v-tooltip="i18n('Issue proforma')"
+            @click="issueProforma()"
+            v-if="allOrdered() && !hasProforma() && !hasInvoice()">
+            <span class="icon">
+                <fa icon="file-invoice"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            v-tooltip="i18n('Download Invoice (long click for cancel)')"
+            v-long-click:1500="cancelInvoice"
+            key="invoice"
+            @click="downloadInvoice"
+            v-if="hasInvoice() || hasProforma()">
+            <span class="icon has-text-info">
+                <fa :icon="hasInvoice() ? 'file-invoice-dollar' : 'file-invoice'"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            v-tooltip="i18n('Download Sale Return Offer')"
+            :disabled="processing()"
+            @click="downloadOffer('pdf')"
+            v-if="allOrdered()">
+            <span class="icon has-text-info">
+                <fa icon="file-pdf"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            v-tooltip="i18n('Download Excel Sale Return Offer')"
+            :disabled="processing()"
+            @click="downloadOffer('xlsx')"
+            v-if="allOrdered()">
+            <span class="icon has-text-info">
+                <fa icon="file-spreadsheet"/>
+            </span>
+        </button>
+        <button class="button is-naked"
+            :class="[
+                {'has-text-danger': !order.partner.email},
+                {'has-text-success': emailedAt() && !hasInvoice() && !hasProforma() || invoiceEmailedAt},
+            ]"
+            v-tooltip="emailTooltip"
+            :disabled="!order.partner.email || processing()"
+            @click="hasInvoice() || hasProforma() ? emailInvoice() : email()"
+            v-if="order.partner && allOrdered()">
+            <span class="icon">
+                <fa :icon="hasInvoice() || hasProforma() ? 'envelope-open-dollar' : 'envelope'"/>
+            </span>
+        </button>
     </div>
 </template>
 
@@ -200,8 +128,8 @@ export default {
                 ? `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${time}`
                 : null;
         },
-        fulfilled() {
-            return this.form.field('status').value === this.enums.orderStatuses.Fulfilled;
+        fulfilling() {
+            return this.form.field('status').value === this.enums.orderStatuses.Fulfilling;
         },
         finalized() {
             return this.form.field('status').value === this.enums.orderStatuses.Finalized;

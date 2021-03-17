@@ -5,7 +5,7 @@
         @click="update"
         v-if="visible">
         <span :class="['icon', cssClass]">
-            <fa icon="shipping-fast"/>
+            <fa icon="box"/>
         </span>
     </button>
 </template>
@@ -14,23 +14,16 @@
 import { mapState } from "vuex";
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faShippingFast } from '@fortawesome/free-solid-svg-icons';
+import { faBox } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faShippingFast);
+library.add(faBox);
 
 export default {
-    name: 'Ship',
+    name: 'Prepare',
 
     directives: { tooltip: VTooltip },
 
-    inject: ['i18n',  'updateFlow', 'order', 'processing'],
-
-    props: {
-        visibleWith: {
-            type: String,
-            required: true,
-        },
-    },
+    inject: ['allRemovedFromStock', 'i18n',  'updateFlow', 'order', 'processing'],
 
     computed: {
         ...mapState(['enums']),
@@ -38,7 +31,7 @@ export default {
             return this.done ? 'has-text-success' : 'has-text-danger';
         },
         done() {
-            return this.status === this.statuses.Shipped;
+            return this.status === this.statuses.Prepared;
         },
         status() {
             return this.order.form.field('status').value;
@@ -47,19 +40,22 @@ export default {
             return this.enums.orderStatuses;
         },
         tooltip() {
-            return this.done ? this.i18n('Undo ship') : this.i18n('Ship');
+            return this.done
+                ? this.i18n('Undo prepare')
+                : this.i18n('Prepare products');
         },
         visible() {
-            return [this.statuses.Shipped, this.visibleWith]
-                .includes(this.status);
+            return this.status === this.statuses.Prepared
+                || this.status === this.statuses.Fulfilling &&
+                this.allRemovedFromStock();
         },
     },
 
     methods: {
         update() {
             const action = this.done
-                ? this.enums.flowActions.UndoShip
-                :  this.enums.flowActions.Ship;
+                ? this.enums.flowActions.UndoPrepare
+                : this.enums.flowActions.Prepare;
 
             this.updateFlow(action);
         }

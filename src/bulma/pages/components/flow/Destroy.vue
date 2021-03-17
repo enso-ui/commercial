@@ -23,7 +23,7 @@ export default {
     computed: {
         ...mapState(['enums']),
         disabled() {
-            return this.status === this.enums.orderStatuses.Fulfilled
+            return this.status === this.enums.orderStatuses.Fulfilling
                 || this.processing();
         },
         route() {

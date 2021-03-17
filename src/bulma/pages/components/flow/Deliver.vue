@@ -5,7 +5,7 @@
         @click="update"
         v-if="visible">
         <span :class="['icon', cssClass]">
-            <fa icon="shipping-fast"/>
+            <fa icon="truck-loading"/>
         </span>
     </button>
 </template>
@@ -14,23 +14,16 @@
 import { mapState } from "vuex";
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faShippingFast } from '@fortawesome/free-solid-svg-icons';
+import { faTruckLoading } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faShippingFast);
+library.add(faTruckLoading);
 
 export default {
-    name: 'Ship',
+    name: 'Deliver',
 
     directives: { tooltip: VTooltip },
 
     inject: ['i18n',  'updateFlow', 'order', 'processing'],
-
-    props: {
-        visibleWith: {
-            type: String,
-            required: true,
-        },
-    },
 
     computed: {
         ...mapState(['enums']),
@@ -38,7 +31,7 @@ export default {
             return this.done ? 'has-text-success' : 'has-text-danger';
         },
         done() {
-            return this.status === this.statuses.Shipped;
+            return this.status === this.statuses.Delivered;
         },
         status() {
             return this.order.form.field('status').value;
@@ -47,10 +40,10 @@ export default {
             return this.enums.orderStatuses;
         },
         tooltip() {
-            return this.done ? this.i18n('Undo ship') : this.i18n('Ship');
+            return this.done ? this.i18n('Undo deliver') : this.i18n('Deliver');
         },
         visible() {
-            return [this.statuses.Shipped, this.visibleWith]
+            return [this.statuses.Shipped, this.statuses.Delivered]
                 .includes(this.status);
         },
     },
@@ -58,8 +51,8 @@ export default {
     methods: {
         update() {
             const action = this.done
-                ? this.enums.flowActions.UndoShip
-                :  this.enums.flowActions.Ship;
+                ? this.enums.flowActions.UndoDeliver
+                :  this.enums.flowActions.Deliver;
 
             this.updateFlow(action);
         }

@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="column">
-                    <actions v-on="$listeners"/>
+                    <controls v-on="$listeners"/>
                 </div>
             </div>
         </div>
@@ -47,12 +47,12 @@ import { mapState } from 'vuex';
 import { FormField } from '@enso-ui/forms/bulma';
 import EmagOrder from '@enso-ui/emag/src/bulma/components/Order.vue';
 import Partners from './Partners.vue';
-import Actions from './Actions.vue';
+import Controls from './Controls.vue';
 
 export default {
     name: 'FormContent',
 
-    components: { Actions, EmagOrder, FormField, Partners },
+    components: { Controls, EmagOrder, FormField, Partners },
 
     inject: ['order'],
 

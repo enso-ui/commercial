@@ -33,8 +33,8 @@
             </div>
             <div class="column is-narrow">
                 <boolean-filter class="box raises-on-hover"
-                    :name="i18n('Fulfilled')"
-                    v-model="params.fulfilled"/>
+                    :name="i18n('Fulfilling')"
+                    v-model="params.fulfilling"/>
             </div>
             <div class="column is-narrow">
                 <enso-date-filter class="box raises-on-hover"
@@ -57,8 +57,8 @@
             :filters="filters"
             :intervals="tableIntervals"
             :params="params"
-            @create-company="create('company')"
-            @create-individual="create('individual')"
+            @create-company="create('company_id')"
+            @create-person="create('person_id')"
             @reset="$refs.filterState.reset()">
             <template v-slot:channel="{ row }">
                 <span class="tag is-table-tag is-info">
@@ -106,7 +106,7 @@ export default {
                 max: null,
             },
             params: {
-                fulfilled: null,
+                fulfilling: null,
                 productId: null,
                 dateInterval: 'thisMonth',
                 client: null,

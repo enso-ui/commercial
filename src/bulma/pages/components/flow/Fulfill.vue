@@ -1,7 +1,7 @@
 <template>
     <button class="button is-naked"
         v-tooltip="tooltip"
-        :disabled="processing() || someInStock()"
+        :disabled="processing() || disabled"
         @click="update"
         v-if="visible">
         <span :class="['icon', cssClass]">
@@ -23,19 +23,34 @@ export default {
 
     directives: { tooltip: VTooltip },
 
-    inject: ['allInStock', 'i18n',  'order', 'processing', 'someInStock', 'updateFlow'],
+    inject: ['i18n',  'order', 'processing', 'updateFlow'],
+
+    props: {
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
+        done: {
+            type: Boolean,
+            required: true,
+        },
+        visibleWith: {
+            type: String,
+            required: true,
+        },
+    },
 
     computed: {
         ...mapState(['enums']),
         cssClass() {
-            if (!this.done) {
+            if (!this.started) {
                 return 'has-text-danger';
             }
 
-            return this.allInStock() ? 'has-text-success' : 'has-text-warning';
+            return this.done ? 'has-text-success' : 'has-text-warning';
         },
-        done() {
-            return this.status === this.statuses.Fulfilled;
+        started() {
+            return this.status === this.statuses.Fulfilling;
         },
         status() {
             return this.order.form.field('status').value;
@@ -44,21 +59,17 @@ export default {
             return this.enums.orderStatuses;
         },
         tooltip() {
-            if (this.someInStock()) {
-                return null;
-            }
-
-            return this.done ? this.i18n('Undo fulfill') : this.i18n('Fulfill');
+            return this.started ? this.i18n('Undo fulfill') : this.i18n('Fulfill');
         },
         visible() {
-            return [this.statuses.Received, this.statuses.Fulfilled]
+            return [this.statuses.Fulfilling, this.visibleWith]
                 .includes(this.status);
         },
     },
 
     methods: {
         update() {
-            const action = this.done
+            const action = this.started
                 ? this.enums.flowActions.UndoFulfill
                 : this.enums.flowActions.Fulfill;
 

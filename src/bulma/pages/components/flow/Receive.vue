@@ -5,7 +5,7 @@
         @click="update"
         v-if="visible">
         <span :class="['icon', cssClass]">
-            <fa icon="box-open"/>
+            <fa icon="truck-loading"/>
         </span>
     </button>
 </template>
@@ -14,9 +14,9 @@
 import { mapState } from "vuex";
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+import { faTruckLoading } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faBoxOpen);
+library.add(faTruckLoading);
 
 export default {
     name: 'Receive',

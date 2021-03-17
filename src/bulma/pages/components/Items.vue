@@ -3,8 +3,9 @@
         v-if="visible">
         <div class="control">
             <div class="field has-addons">
-                <enso-typeahead class="product-selector"
+                <enso-typeahead class="item-selector"
                     source="commercial.products"
+                    :placeholder="i18n('Search in products')"
                     :params="params"
                     :paginate="10"
                     @selected="clear()"
@@ -49,8 +50,9 @@
                         </article>
                     </template>
                 </enso-typeahead>
-                <enso-typeahead class="product-selector"
+                <enso-typeahead class="item-selector"
                     source="commercial.services"
+                    :placeholder="i18n('Search in services')"
                     :paginate="10"
                     @selected="$refs.services.clear()"
                     v-on="$listeners"
@@ -172,7 +174,7 @@ export default {
 </script>
 
 <style lang="scss">
-    .product-selector.dropdown.typeahead {
+    .item-selector.dropdown.typeahead {
         .dropdown-menu {
             .dropdown-content {
                 .items {

@@ -2,7 +2,7 @@
     <button class="button is-naked"
         :disabled="disabled"
         @click="update"
-        v-if="allInStock()">
+        v-if="doable">
         <span class="icon">
             <fa :icon="icon"/>
         </span>
@@ -19,12 +19,19 @@ library.add(faLock, faLockOpen);
 export default {
     name: 'Finalize',
 
-    inject: ['allInStock', 'order', 'processing',  'updateFlow'],
+    inject: ['order', 'processing',  'updateFlow'],
+
+    props: {
+        doable: {
+            type: Boolean,
+            required: true,
+        },
+    },
 
     computed: {
         ...mapState(['enums']),
         disabled() {
-            return this.processing() || !this.allInStock();
+            return this.processing() || !this.doable;
         },
         done() {
             return this.status === this.enums.orderStatuses.Finalized;

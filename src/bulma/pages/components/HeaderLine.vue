@@ -21,39 +21,39 @@
                     {{ i18n('Quantity') }}
                 </span>
             </th>
-            <th v-if="!fulfilled">
+            <th v-if="!fulfilling">
                 <span class="header-item">
                     {{ i18n('List') }}
                 </span>
             </th>
-            <th v-if="!fulfilled">
+            <th v-if="!fulfilling">
                 <span class="header-item">
                     {{ i18n('Discount') }}
                 </span>
             </th>
-            <th v-if="!fulfilled">
+            <th v-if="!fulfilling">
                 <span class="header-item">
                     {{ i18n('Unitary Price') }}
                 </span>
             </th>
-            <th v-if="!fulfilled">
+            <th v-if="!fulfilling">
                 <span class="header-item">
                     {{ i18n('Value') }}
                 </span>
             </th>
-            <th v-if="!fulfilled">
+            <th v-if="!fulfilling">
                 {{ i18n('VAT') }}
             </th>
             <th
-                v-if="!fulfilled">
+                v-if="!fulfilling">
                 {{ i18n('Total') }}
             </th>
             <th
-                v-if="fulfilled">
+                v-if="fulfilling">
                 {{ i18n('Position') }}
             </th>
             <th
-                v-if="fulfilled">
+                v-if="fulfilling">
                 {{ i18n('New Position') }}
             </th>
             <th/>
@@ -78,9 +78,9 @@ export default {
 
     computed: {
         ...mapState(['enums']),
-        fulfilled() {
+        fulfilling() {
             return this.order.form.field('status')
-                .value === this.enums.orderStatuses.Fulfilled;
+                .value === this.enums.orderStatuses.Fulfilling;
         }
     }
 };

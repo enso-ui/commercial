@@ -1,20 +1,20 @@
 <template>
     <button class="button is-naked"
-        v-tooltip="i18n('Insert in stock')"
+        v-tooltip="i18n('Remove From Stock')"
         :disabled="processing()"
-        @click="insertInStock"
+        @click="removeFromStock"
         v-if="visible">
         <span class="icon">
-            <fa icon="download"/>
+            <fa icon="upload"/>
         </span>
     </button>
     <button class="button is-naked has-text-danger"
-        v-tooltip="i18n('Undo stock insertion')"
+        v-tooltip="i18n('Undo Stock Removal')"
         :disabled="processing()"
-        @click="undoStockInsertion"
+        @click="undoStockRemoval"
         v-else-if="isUndo">
         <span class="icon has-text-danger">
-            <fa icon="upload"/>
+            <fa icon="download"/>
         </span>
     </button>
 </template>
@@ -29,13 +29,13 @@ import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons';
 library.add(faDownload, faUpload);
 
 export default {
-    name: 'StockInsertion',
+    name: 'StockRemoval',
 
     directives: { tooltip: VTooltip },
 
     inject: [
-        'i18n', 'insertable', 'insertInStock',
-        'order', 'processing', 'someInStock', 'undoStockInsertion'
+        'i18n', 'insertable', 'order', 'processing',
+        'removable', 'removeFromStock', 'undoStockRemoval',
     ],
 
     computed: {
@@ -43,17 +43,14 @@ export default {
         field() {
             return this.order.form.field;
         },
-        finalized() {
-            return this.field('status').value === this.enums.orderStatuses.Finalized;
-        },
         fulfilling() {
             return this.field('status').value === this.enums.orderStatuses.Fulfilling;
         },
         isUndo() {
-            return !this.finalized && this.fulfilling && this.someInStock();            
+            return this.fulfilling && this.insertable();            
         },
         visible() {
-            return this.fulfilling && this.insertable();
+            return this.fulfilling && this.removable();
         },
     },
 };

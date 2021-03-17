@@ -34,8 +34,7 @@ export default {
                     .every(({ removedFromStock }) => removedFromStock);
         },
         insertable() {
-            return !this.form.field('is_finalized').value
-                && this.hasLines
+            return this.hasLines
                 && this.productLines
                     .some(line => line.removedFromStock && line.positionId);
         },
