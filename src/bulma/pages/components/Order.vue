@@ -1,24 +1,37 @@
 <template>
     <div class="wrapper">
         <div class="controls is-pulled-right">
-            <slot name="controls"/>
-            <a class="button"
-               @click="quickView = true">
-                <span class="icon is-large">
-                    <fa icon="ellipsis-h"/>
-                </span>
-            </a>
+            <div class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <slot name="controls"/>
+                    </div>
+                    <div class="level-item">
+                        <span class="tag channel is-warning is-medium is-bold"
+                            v-if="form">
+                            {{ status }}
+                        </span>
+                    </div>
+                    <div class="level-item">
+                        <a class="button"
+                        @click="quickView = true">
+                            <span class="icon is-large">
+                                <fa icon="ellipsis-h"/>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
         <enso-form disable-state
-            @ready="
-                order.form = $event.form;
-                order.lineCount = order.form.param('lineCount');
-            "
-            @error="order.form.fetch()"
+            @ready="order.form = $event.form;
+                order.lineCount = order.form.param('lineCount')"
+            @error="form.fetch()"
             @submit="form.field('version').value = $event.version"
             ref="order">
             <template v-slot:general
-                v-if="order.form">
+                v-if="form">
                 <form-content/>
             </template>
         </enso-form>
@@ -98,14 +111,17 @@ export default {
         form() {
             return this.order.form;
         },
-        type() {
-            return this.form && this.form.param('type');
-        },
         id() {
             return this.form && this.$route.params[this.type];
         },
         lines() {
             return this.order.lines;
+        },
+        status() {
+            return this.form && this.form.field('status').value;
+        },
+        type() {
+            return this.form && this.form.param('type');
         },
     },
 
@@ -114,55 +130,46 @@ export default {
             this.order.deleteModal = false;
             this.order.processing = true;
 
-            axios.delete(this.route(
-                `commercial.${this.type}s.destroy`,
-                this.$route.params,
-            )).then(({ data }) => {
-                this.order.processing = false;
-                this.toastr.success(data.message);
-                this.$router.push({ name: data.redirect });
-            }).catch(error => {
-                this.order.processing = false;
-                this.errorHandler(error);
-            });
-        },
-        updateOrder(order) {
-            Object.keys(order)
-                .forEach(attribute => (this.form
-                    .field(attribute).value = order[attribute]));
-        },
-        reloadOrder(order) {
-            this.form.fetch();
-            this.$refs.lines.fetch();
+            axios.delete(this.path('destroy'))
+                .then(({ data }) => {
+                    this.toastr.success(data.message);
+                    this.$router.push({ name: data.redirect });
+                }).catch(this.errorHandler)
+                .finally(() => (this.order.processing = false));
         },
         email() {
             this.order.processing = true;
 
-            axios.post(
-                this.route(
-                    `commercial.${this.type}s.email`,
-                    this.$route.params,
-                ), { version: this.version() },
-            ).then(({ data }) => {
-                this.order.processing = false;
-                const { emailed_at, emailer, version } = data;
-                this.form.field('emailed_at').value = emailed_at;
-                this.form.field('emailer').value = emailer;
-                this.form.field('version').value = version;
-            }).catch(error => {
-                this.order.processing = false;
-                this.errorHandler(error);
-            });
+            axios.post(this.path('email'), { version: this.version() })
+                .then(({ data }) => {
+                    const { emailed_at, emailer, version } = data;
+                    this.form.field('emailed_at').value = emailed_at;
+                    this.form.field('emailer').value = emailer;
+                    this.form.field('version').value = version;
+                }).catch(this.errorHandler)
+                .finally(() => (this.order.processing = false));
         },
-        toggleFulfilling() {
-            const field = this.form.field(this.form.param('fulfillingAttribute'));
-
-            field.value = field.value
-                ? ''
-                : format(new Date(), 'Y-m-d H:i:s');
-
-            this.form.submit();
+        path(action) {
+            return this.route(
+                `commercial.${this.type}s.${action}`,
+                this.$route.params,
+            );
         },
+        updateFlow(action) {
+            const timestamp = this.enums.flowTimestamps._get(action);
+            this.order.processing = true;
+
+            return axios.patch(this.path(action), { version: this.version() })
+                .then(({ data }) => {
+                    const { [timestamp]: date, version, status } = data;
+
+                    this.form.field(timestamp).value = date;
+                    this.form.field('version').value = version;
+                    this.form.field('status').value = status;
+                }).catch(this.errorHandler)
+                .finally(() => (this.order.processing = false));
+        },
+        //TODO remove after refactor - flow
         toggleLock() {
             this.form.field('is_finalized').value = !this.finalized();
             this.form.submit();
@@ -170,10 +177,6 @@ export default {
         },
         hasLines() {
             return this.lines.length > 0;
-        },
-        fulfilling() {
-            return this.form
-                && this.form.field(this.form.param('fulfillingAttribute')).value;
         },
         noneOrdered() {
             return this.hasLines()
@@ -195,33 +198,23 @@ export default {
             return [this.enums.orders.Sale, this.enums.orders.PurchaseReturn]
                 .includes(this.type);
         },
-        linesProcessing() {
-            return this.hasLines()
-                && this.lines.some(({ processing }) => processing);
-        },
         processing() {
             return this.$refs.order.state.loading
                 || this.order.processing
-                || this.linesProcessing();
-        },
-        finalized() {
-            return this.form
-                && this.form.field('is_finalized').value;
+                || this.lines.some(({ processing }) => processing);
         },
         version() {
             return this.form && this.form.field('version').value;
         },
-
-        allRecent() {
-            return true;
-        },
-
+        //TODO remove after encapsulation
         emailedAt() {
             return this.form.field('emailed_at').value;
         },
+        //TODO remove after encapsulation
         emailer() {
             return this.form.field('emailer').value;
         },
+        //TODO remove after encapsulation
         formatDateTime(stringDate) {
             const date = new Date(stringDate);
             return date.toLocaleString(this.preferences.global.lang);
@@ -230,27 +223,24 @@ export default {
 
     provide() {
         return {
-            updateOrder: this.updateOrder,
             reloadOrder: this.reloadOrder,
             email: this.email,
-            toggleFulfilling: this.toggleFulfilling,
+            updateFlow: this.updateFlow,
             toggleLock: this.toggleLock,
             lines: this.lines,
-            hasLines: this.hasLines,
-            fulfilling: this.fulfilling,
             noneOrdered: this.noneOrdered,
             someOrdered: this.someOrdered,
             allOrdered: this.allOrdered,
             hasIns: this.hasIns,
             hasOuts: this.hasOuts,
             processing: this.processing,
-            finalized: this.finalized,
             version: this.version,
-            allRecent: this.allRecent,
             loadMore: this.loadMore,
             emailedAt: this.emailedAt,
             emailer: this.emailer,
             formatDateTime: this.formatDateTime,
+            //Bleah
+            updateFulfilment: () => null,
         };
     },
 };
@@ -266,6 +256,10 @@ export default {
             position: absolute;
             top: .3em;
             right: .3em;
+
+            .channel {
+                margin: 1px;
+            }
         }
     }
 

@@ -47,7 +47,7 @@ import SelectField from '@enso-ui/forms/src/bulma/fields/SelectField.vue';
 export default {
     name: 'Partners',
 
-    inject: ['errorHandler', 'i18n', 'order', 'hasLines'],
+    inject: ['errorHandler', 'i18n', 'order'],
 
     components: { SelectField, FormField },
 
@@ -68,7 +68,7 @@ export default {
                 : this.form.param('partnerAttribute');
         },
         partnerReadonly() {
-            return this.hasLines();
+            return this.order.lines.length > 0;
         },
         addressReadonly() {
             return this.form.field('is_finalized').value;

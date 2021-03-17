@@ -6,7 +6,6 @@ export default {
             promise: null,
             query: '',
             partner: null,
-            warehouse: false,
             processing: false,
             deleteModal: false,
             page: 1,

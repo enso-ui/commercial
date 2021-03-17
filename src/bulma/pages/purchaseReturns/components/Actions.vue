@@ -8,7 +8,7 @@
                         v-tooltip="i18n('Remove from stock')"
                         :disabled="processing()"
                         @click="removeFromStock"
-                        v-if="order.warehouse && removable()">
+                        v-if="fulfilled && removable()">
                         <span class="icon">
                             <fa icon="upload"/>
                         </span>
@@ -18,36 +18,31 @@
                         v-tooltip="i18n('Undo stock removal')"
                         :disabled="processing()"
                         @click="undoStockRemoval"
-                        v-if="order.warehouse && insertable()">
+                        v-if="fulfilled && insertable()">
                         <span class="icon has-text-danger">
                             <fa icon="download"/>
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="
-                            order.warehouse
-                                ? i18n('Leave warehouse mode')
-                                : i18n('Enter warehouse mode')
-                        "
+                        v-tooltip="fulfilled
+                            ? i18n('Leave warehouse mode')
+                            : i18n('Enter warehouse mode')"
                         :disabled="processing()"
-                        @click="order.warehouse = !order.warehouse"
-                        v-if="fulfilling() && allOrdered()">
+                        v-if="fulfilled && allOrdered()">
                         <span class="icon"
                             :class="allRemovedFromStock() ? 'has-text-success' : 'has-text-danger'">
                             <fa icon="warehouse"/>
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="
-                            fulfilling()
-                                ? i18n('Leave fulfilling mode')
-                                : i18n('Enter fulfilling mode')
-                        "
-                        :disabled="processing() || someRemovedFromStock() || order.warehouse"
-                        @click="toggleFulfilling"
+                        v-tooltip="fulfilled
+                            ? i18n('Leave fulfilled mode')
+                            : i18n('Enter fulfilled mode')"
+                        :disabled="processing() || someRemovedFromStock() || fulfilled"
+                        @click="updateFulfilment(fulfilled ? 'cancel' : 'start')"
                         v-if="allOrdered() && fullyReserved()">
                         <span class="icon"
-                            :class="{'has-text-success': fulfilling()}">
+                            :class="{'has-text-success': fulfilled}">
                             <fa icon="box-open"/>
                         </span>
                     </button>
@@ -56,7 +51,7 @@
                         @click="order.deleteModal = true"
                         v-if="
                             canAccess(`commercial.${form.param('type')}s.destroy`)
-                            && !fulfilling()
+                            && !fulfilled
                         ">
                         <span class="icon">
                             <fa icon="trash-alt"/>
@@ -65,9 +60,9 @@
                     <button class="button is-naked"
                         :disabled="processing() || !allRemovedFromStock()"
                         @click="toggleLock"
-                        v-if="fulfilling()">
+                        v-if="fulfilled">
                         <span class="icon">
-                            <fa :icon="finalized() ? 'lock' : 'lock-open'"/>
+                            <fa :icon="finalized ? 'lock' : 'lock-open'"/>
                         </span>
                     </button>
                 </div>
@@ -131,6 +126,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -151,14 +147,15 @@ export default {
     directives: { tooltip: VTooltip, longClick },
 
     inject: [
-        'canAccess', 'i18n', 'order', 'email', 'toggleFulfilling', 'toggleLock', 'fulfilling',
-        'allOrdered', 'hasIns', 'hasOuts', 'processing', 'finalized', 'emailedAt', 'emailer',
-        'removeFromStock', 'undoStockRemoval', 'someRemovedFromStock', 'allRemovedFromStock',
-        'insertable', 'removable', 'fullyReserved', 'downloadStockRemoval',
+        'canAccess', 'i18n', 'order', 'email', 'updateFulfilment', 'toggleLock',
+        'allOrdered', 'hasIns', 'hasOuts', 'processing', 'emailedAt',
+        'emailer', 'removeFromStock', 'undoStockRemoval', 'someRemovedFromStock',
+        'allRemovedFromStock', 'insertable', 'removable', 'fullyReserved', 'downloadStockRemoval',
         'downloadDeliveryNote', 'downloadOrder', 'formatDateTime'
     ],
 
     computed: {
+        ...mapState(['enums']),
         form() {
             return this.order.form;
         },
@@ -169,7 +166,14 @@ export default {
 
             const time = this.formatDateTime(this.emailedAt());
             return `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${time}`;
-        }
+        },
+        fulfilled() {
+            return this.form.field('status').value === this.enums.orderStatuses.Fulfilled;
+        },
+        finalized() {
+            return this.form.field('status').value === this.enums.orderStatuses.Finalized;
+        },
+        
     },
 };
 </script>

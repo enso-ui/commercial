@@ -1,7 +1,7 @@
 <template>
     <div class="columns order-form">
         <div class="column is-5-tablet is-6-widescreen">
-            <partners v-bind="$attrs"/>
+            <partners/>
         </div>
         <div class="column">
             <div class="columns">
@@ -9,23 +9,28 @@
                     <div class="columns">
                         <div class="column is-narrow">
                             <form-field v-bind="$attrs"
-                                :field="form.field('date')"/>
+                                :field="field('date')"/>
                         </div>
                         <div class="column is-narrow">
-                            <form-field v-bind="$attrs"
-                                :field="form.field(form.param('fulfillingAttribute'))"/>
+                            <form-field class="warehouse"
+                                v-bind="$attrs"
+                                :field="field('warehouse_id')"/>
                         </div>
                     </div>
                     <div class="columns">
                         <div class="column is-narrow">
                             <form-field v-bind="$attrs"
-                                :field="form.field('number')"/>
+                                :field="field('number')"/>
                         </div>
                         <div class="column is-narrow"
-                             v-if="[enums.orders.Purchase, enums.orders.PurchaseReturn]
-                                .includes(form.param('type'))">
+                            v-if="partner">
                             <form-field v-bind="$attrs"
-                                :field="form.field('supplier_order_reference')"/>
+                                :field="field('external_reference')"/>
+                        </div>
+                        <div class="column is-narrow"
+                             v-else-if="enums.orders.Sale === form.param('type')">
+                            <emag-order
+                                v-if="field('external_reference').value"/>
                         </div>
                     </div>
                 </div>
@@ -40,30 +45,42 @@
 <script>
 import { mapState } from 'vuex';
 import { FormField } from '@enso-ui/forms/bulma';
+import EmagOrder from '@enso-ui/emag/src/bulma/components/Order.vue';
 import Partners from './Partners.vue';
 import Actions from './Actions.vue';
 
 export default {
     name: 'FormContent',
 
-    components: { Actions, FormField, Partners, },
+    components: { Actions, EmagOrder, FormField, Partners },
 
-    inject: ['order', 'hasLines'],
+    inject: ['order'],
 
     computed: {
         ...mapState(['enums']),
         form() {
             return this.order.form;
         },
+        field() {
+            return this.form.field;
+        },
+        partner() {
+            const orders = this.enums.orders;
+            const withSupplier = [orders.Purchase, orders.PurchaseReturn];
+
+            return withSupplier.includes(this.form.param('type'))
+                ? !!this.field('supplier_id').value
+                : !!this.field('person_id').value || !!this.field('company_id').value;
+        },
         readonlyDate() {
-            return this.hasLines();
+            return this.order.lines.length > 0;
         },
     },
 
     watch: {
         readonlyDate: {
             handler(readonly) {
-                this.form.field('date').meta.readonly = readonly;
+                this.field('date').meta.readonly = readonly;
             },
             immediate: true,
         },
@@ -79,7 +96,7 @@ export default {
             padding-right: 0.6em;
         }
 
-        .field > .control > .input {
+        .field > .control > .input, .field.warehouse > .vue-select {
             width: 10.5em;
         }
     }

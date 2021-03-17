@@ -1,9 +1,5 @@
 <template>
-    <sale class="box has-background-light raises-on-hover">
-        <template v-slot:controls>
-            <slot name="controls"/>
-        </template>
-    </sale>
+    <sale class="box has-background-light raises-on-hover"/>
 </template>
 
 <script>

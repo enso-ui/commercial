@@ -21,39 +21,39 @@
                     {{ i18n('Quantity') }}
                 </span>
             </th>
-            <th v-if="!order.warehouse">
+            <th v-if="!fulfilled">
                 <span class="header-item">
                     {{ i18n('List') }}
                 </span>
             </th>
-            <th v-if="!order.warehouse">
+            <th v-if="!fulfilled">
                 <span class="header-item">
                     {{ i18n('Discount') }}
                 </span>
             </th>
-            <th v-if="!order.warehouse">
+            <th v-if="!fulfilled">
                 <span class="header-item">
                     {{ i18n('Unitary Price') }}
                 </span>
             </th>
-            <th v-if="!order.warehouse">
+            <th v-if="!fulfilled">
                 <span class="header-item">
                     {{ i18n('Value') }}
                 </span>
             </th>
-            <th v-if="!order.warehouse">
+            <th v-if="!fulfilled">
                 {{ i18n('VAT') }}
             </th>
             <th
-                v-if="!order.warehouse">
+                v-if="!fulfilled">
                 {{ i18n('Total') }}
             </th>
             <th
-                v-if="order.warehouse">
+                v-if="fulfilled">
                 {{ i18n('Position') }}
             </th>
             <th
-                v-if="order.warehouse">
+                v-if="fulfilled">
                 {{ i18n('New Position') }}
             </th>
             <th/>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
@@ -73,7 +74,15 @@ export default {
 
     directives: { tooltip: VTooltip },
 
-    inject: ['i18n', 'order', 'fulfilling'],
+    inject: ['i18n', 'order'],
+
+    computed: {
+        ...mapState(['enums']),
+        fulfilled() {
+            return this.order.form.field('status')
+                .value === this.enums.orderStatuses.Fulfilled;
+        }
+    }
 };
 </script>
 

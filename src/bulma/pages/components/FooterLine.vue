@@ -8,14 +8,14 @@
             <td colspan="3"/>
             <td class="has-text-right is-bold">
                 <div class="total-quantity">
-                    {{ form.field('quantity').value }}
+                    {{ field('quantity').value }}
                 </div>
             </td>
-            <td v-if="!order.warehouse"/>
-            <td :colspan="order.warehouse ? 2 : 4"/>
+            <td v-if="!fulfilled"/>
+            <td :colspan="fulfilled ? 2 : 4"/>
             <td class="has-text-right is-bold total-price"
-                v-if="!order.warehouse">
-                {{ form.field('total').value | numberFormat(2) }}
+                v-if="!fulfilled">
+                {{ field('total').value | numberFormat(2) }}
             </td>
             <td/>
         </tr>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -32,12 +33,16 @@ library.add(faInfoCircle);
 export default {
     name: 'FooterLine',
 
-    inject: ['i18n', 'order', 'fulfilling'],
+    inject: ['i18n', 'order'],
 
     computed: {
-        form() {
-            return this.order.form;
+        ...mapState(['enums']),
+        field() {
+            return this.order.form.field;
         },
+        fulfilled() {
+            return this.field('status').value === this.enums.orderStatuses.Fulfilled;
+        }
     },
 };
 </script>

@@ -1,9 +1,5 @@
 <template>
-    <order ref="order">
-        <template v-slot:controls>
-            <slot name="controls"/>
-        </template>
-    </order>
+    <order ref="order"/>
 </template>
 
 <script>
@@ -33,14 +29,12 @@ export default {
     provide() {
         return {
             order: this.order,
-
             insertInStock: this.insertInStock,
             undoStockInsertion: this.undoStockInsertion,
             noneInStock: this.noneInStock,
             someInStock: this.someInStock,
             allInStock: this.allInStock,
             insertable: this.insertable,
-
             downloadOrder: this.downloadOrder,
             downloadGrn: this.downloadGrn,
         };

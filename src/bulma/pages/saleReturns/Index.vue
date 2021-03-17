@@ -2,6 +2,12 @@
     <div>
         <div class="columns is-multiline is-centered"
             v-if="ready">
+            <div class="column is-narrow">
+                <enso-filter class="box raises-on-hover"
+                     v-model="filters.sale_returns.channel_id"
+                     :options="enums.saleChannels._filter()"
+                     :name="i18n('Channel')"/>
+            </div>
             <div class="column is-5">
                 <client-filter :params="params"
                     :filters="filters.sale_returns"/>
@@ -53,7 +59,13 @@
             :params="params"
             @create-company="create('company')"
             @create-individual="create('individual')"
-            @reset="$refs.filterState.reset()"/>
+            @reset="$refs.filterState.reset()">
+            <template v-slot:channel="{ row }">
+                <span class="tag is-table-tag is-info">
+                    {{ row.channel }}
+                </span>
+            </template>
+        </enso-table>
     </div>
 </template>
 
@@ -61,7 +73,7 @@
 import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBuilding, faUserTie } from '@fortawesome/free-solid-svg-icons';
-import { BooleanFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
+import { BooleanFilter, EnsoFilter, EnsoDateFilter, EnsoSelectFilter } from '@enso-ui/filters/bulma';
 import { EnsoTable } from '@enso-ui/tables/bulma';
 import ClientFilter from '@enso-ui/financials/src/bulma/pages/financials/clients/components/ClientFilter.vue';
 import { FilterState } from '@enso-ui/filters/renderless';
@@ -72,7 +84,7 @@ export default {
     name: 'Index',
 
     components: {
-        BooleanFilter, ClientFilter, EnsoDateFilter, EnsoTable, EnsoSelectFilter, FilterState,
+        BooleanFilter, ClientFilter, EnsoFilter, EnsoDateFilter, EnsoTable, EnsoSelectFilter, FilterState,
     },
 
     inject: ['errorHandler', 'i18n', 'route'],
@@ -85,6 +97,7 @@ export default {
                 sale_returns: {
                     person_id: null,
                     company_id: null,
+                    channel_id: null,
                     is_finalized: null,
                 },
             },
@@ -102,7 +115,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['meta']),
+        ...mapState(['meta', 'enums']),
         tableIntervals() {
             return {
                 sale_returns: {

@@ -32,7 +32,6 @@ export default {
     provide() {
         return {
             order: this.order,
-
             removeFromStock: this.removeFromStock,
             undoStockRemoval: this.undoStockRemoval,
             noneRemovedFromStock: this.noneRemovedFromStock,
@@ -42,7 +41,6 @@ export default {
             insertable: this.insertable,
             removable: this.removable,
             fullyReserved: this.fullyReserved,
-
             downloadDeliveryNote: this.downloadDeliveryNote,
             downloadStockRemoval: this.downloadStockRemoval,
             downloadOrder: this.downloadOrder,

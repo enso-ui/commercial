@@ -34,7 +34,7 @@ export default {
             required: true,
         },
         productId: {
-            type: Number,
+            type: [Number, String],
             required: true,
         },
     },

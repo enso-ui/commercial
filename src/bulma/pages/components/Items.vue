@@ -1,88 +1,79 @@
 <template>
-    <div class="columns">
-        <div class="column">
-            <div class="field">
-                <div class="control">
-                    <div class="field has-addons">
-                        <enso-typeahead class="product-selector"
-                            source="commercial.products"
-                            :params="params"
-                            :paginate="10"
-                            @selected="clear()"
-                            v-on="$listeners"
-                            v-if="mode === enums.lineItems.Product"
-                            ref="typeahead">
-                            <template v-slot:option="{ item, highlight }">
-                                <article class="media has-vertically-centered-content">
-                                    <figure class="media-left">
-                                        <p class="image is-64x64 has-vertically-centered-content">
-                                            <img :src="route('core.files.show', item.picture.file.id)"
-                                                v-if="item.picture">
-                                            <img src="/images/not-available-circle.svg"
-                                                v-else>
-                                        </p>
-                                    </figure>
-                                    <div class="media-content has-padding-left-medium">
-                                        <p v-html="highlight(item.name)"/>
-                                        <p v-html="highlight(item.partNumber)"/>
-                                        <p>
-                                            <span class="icon is-small has-text-info">
-                                                <fa icon="ron-sign"
-                                                    size="xs"/>
-                                            </span>
-                                            :
-                                            <strong>{{ item.price }}</strong>
-                                            <span class="icon is-small"
-                                                  :class="item.quantity ? 'has-text-success' : 'has-text-danger'">
-                                                <fa icon="inventory"
-                                                    size="xs"/>
-                                            </span>
-                                            :
-                                            <strong>{{ item.quantity }}</strong>
-                                            <span class="icon is-small has-text-info">
-                                                <fa icon="hand-paper"
-                                                    size="xs"/>
-                                            </span>
-                                            :
-                                            <strong>{{ item.reservedQuantity }}</strong>
-                                        </p>
-                                    </div>
-                                </article>
-                            </template>
-                        </enso-typeahead>
-                        <enso-typeahead class="product-selector"
-                            source="commercial.services"
-                            :paginate="10"
-                            @selected="$refs.services.clear()"
-                            v-on="$listeners"
-                            v-else-if="mode === enums.lineItems.Service"
-                            ref="services"/>
-                        <a class="button is-info"
-                            @click="toggleMode"
-                            :disabled="
-                                order.form && order.form.field('fulfilled_at').value !== null
-                            "
-                            v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
-                            <span class="icon is-small">
-                                <fa :icon="['fab', 'product-hunt']"
-                                    v-if="mode === enums.lineItems.Product"/>
-                                <fa icon="handshake"
-                                    v-else-if="mode === enums.lineItems.Service"/>
-                            </span>
-                        </a>
-                        <a :class="['button', {'is-primary': mappings}]"
-                           v-tooltip="
-                               mappings ? i18n('Only mapped products') : i18n('All products')
-                           "
-                           @click="mappings = !mappings"
-                           :disabled="order.form && order.form.field('fulfilled_at').value !== null"
-                           v-if="type === enums.orders.Purchase">
-                            <span class="icon is-small">
-                                <fa icon="project-diagram"/>
-                            </span>
-                        </a>
-                    </div>
-                </div>
+    <div class="field"
+        v-if="visible">
+        <div class="control">
+            <div class="field has-addons">
+                <enso-typeahead class="product-selector"
+                    source="commercial.products"
+                    :params="params"
+                    :paginate="10"
+                    @selected="clear()"
+                    v-on="$listeners"
+                    v-if="mode === enums.lineItems.Product"
+                    ref="typeahead">
+                    <template v-slot:option="{ item, highlight }">
+                        <article class="media has-vertically-centered-content">
+                            <figure class="media-left">
+                                <p class="image is-64x64 has-vertically-centered-content">
+                                    <img :src="route('core.files.show', item.picture.file.id)"
+                                        v-if="item.picture">
+                                    <img src="/images/not-available-circle.svg"
+                                        v-else>
+                                </p>
+                            </figure>
+                            <div class="media-content has-padding-left-medium">
+                                <p v-html="highlight(item.name)"/>
+                                <p v-html="highlight(item.partNumber)"/>
+                                <p>
+                                    <span class="icon is-small has-text-info">
+                                        <fa icon="ron-sign"
+                                            size="xs"/>
+                                    </span>
+                                    :
+                                    <strong>{{ item.price }}</strong>
+                                    <span class="icon is-small"
+                                            :class="item.quantity ? 'has-text-success' : 'has-text-danger'">
+                                        <fa icon="inventory"
+                                            size="xs"/>
+                                    </span>
+                                    :
+                                    <strong>{{ item.quantity }}</strong>
+                                    <span class="icon is-small has-text-info">
+                                        <fa icon="hand-paper"
+                                            size="xs"/>
+                                    </span>
+                                    :
+                                    <strong>{{ item.reservedQuantity }}</strong>
+                                </p>
+                            </div>
+                        </article>
+                    </template>
+                </enso-typeahead>
+                <enso-typeahead class="product-selector"
+                    source="commercial.services"
+                    :paginate="10"
+                    @selected="$refs.services.clear()"
+                    v-on="$listeners"
+                    v-else-if="mode === enums.lineItems.Service"
+                    ref="services"/>
+                <a class="button is-info"
+                    @click="toggleMode"
+                    v-if="type === enums.orders.Purchase || type === enums.orders.Sale">
+                    <span class="icon is-small">
+                        <fa :icon="['fab', 'product-hunt']"
+                            v-if="mode === enums.lineItems.Product"/>
+                        <fa icon="handshake"
+                            v-else-if="mode === enums.lineItems.Service"/>
+                    </span>
+                </a>
+                <a :class="['button', {'is-primary': mappings}]"
+                    v-tooltip="mappings ? i18n('Only mapped products') : i18n('All products')"
+                    @click="mappings = !mappings"
+                    v-if="type === enums.orders.Purchase">
+                    <span class="icon is-small">
+                        <fa icon="project-diagram"/>
+                    </span>
+                </a>
             </div>
         </div>
     </div>
@@ -122,18 +113,6 @@ export default {
 
     computed: {
         ...mapState(['enums']),
-        form() {
-            return this.order.form;
-        },
-        type() {
-            return this.form.param('type');
-        },
-        params() {
-            return {
-                custom: this.customParams,
-                pivot: this.pivotParams,
-            };
-        },
         customParams() {
             switch (this.type) {
             case this.enums.orders.PurchaseReturn:
@@ -148,6 +127,15 @@ export default {
                 return { type: this.type };
             }
         },
+        form() {
+            return this.order.form;
+        },
+        params() {
+            return {
+                custom: this.customParams,
+                pivot: this.pivotParams,
+            };
+        },
         pivotParams() {
             switch (this.type) {
             case this.enums.orders.Purchase:
@@ -158,6 +146,12 @@ export default {
                 return {};
             }
         },
+        type() {
+            return this.form.param('type');
+        },
+        visible() {
+            return this.form.field('status').value === this.enums.orderStatuses.New;
+        }
     },
 
     created() {

@@ -2,8 +2,7 @@
     <div class="wrapper">
         <div class="columns">
             <div class="column">
-                <items @selected="showOrAdd"
-                    v-if="!fulfilling()"/>
+                <items @selected="showOrAdd"/>
             </div>
             <slot name="mappings"/>
             <div class="column">
@@ -11,7 +10,7 @@
             </div>
         </div>
         <div class="table-responsive order-table"
-            v-if="order.partner && hasLines()">
+            v-if="order.partner && order.lines.length">
             <table class="table is-fullwidth is-striped is-marginless is-narrow is-hoverable">
                 <header-line v-bind="$attrs"/>
                 <transition-group name="lines"
@@ -23,6 +22,7 @@
                         :index="index"
                         :key="line.id"
                         @version-error="fetch"
+                        @update-order="updateOrder"
                         v-on="$listeners"
                         ref="line"/>
                     <tr key="more"
@@ -56,8 +56,7 @@ export default {
     name: 'Lines',
 
     inject: [
-        'errorHandler', 'i18n', 'route', 'order', 'updateOrder', 'hasLines',
-        'version', 'fulfilling', 'loadMore', 'toastr',
+        'errorHandler', 'i18n', 'route', 'order', 'version', 'loadMore', 'toastr',
     ],
 
     components: {
@@ -88,11 +87,11 @@ export default {
                 `commercial.${this.order.form.param('type')}s.lines.index`,
                 this.$route.params,
             ), { params: { page: this.order.page, search: this.order.query } })
-                .then(({ data }) => {
-                    this.updateOrder(data.order);
-                    this.lines.push(...data.data);
-                    this.order.processing = false;
-                }).catch(this.errorHandler);
+                .then(({ data: { order, data } }) => {
+                    this.updateOrder(order);
+                    this.lines.push(...data);
+                }).catch(this.errorHandler)
+                .finally(() => (this.order.processing = false));
         },
         showOrAdd(item) {
             if (!item) {
@@ -100,16 +99,15 @@ export default {
             }
 
             this.order.query = '';
-
             const index = this.itemIndex(item);
 
             if (index > -1) {
                 const line = this.lines.splice(index, 1);
                 this.lines.splice(0, 0, ...line);
-                return;
+            } else {
+                this.fetchOrAdd(item);
             }
 
-            this.fetchOrAdd(item);
         },
         fetchOrAdd(item) {
             if (this.lines.length === this.order.lineCount) {
@@ -127,13 +125,12 @@ export default {
                 .then(({ data }) => {
                     if (data.data.length === 0) {
                         this.add(item);
-                        return;
+                    } else {
+                        this.updateOrder(data.order);
+                        this.lines.splice(0, 0, ...data.data);
                     }
-
-                    this.updateOrder(data.order);
-                    this.lines.splice(0, 0, ...data.data);
-                    this.order.processing = false;
-                }).catch(this.errorHandler);
+                }).catch(this.errorHandler)
+                .finally(() => (this.order.processing = false));;
         },
         add(item) {
             this.order.processing = true;
@@ -146,20 +143,16 @@ export default {
                 this.updateOrder(order);
                 this.lines.splice(0, 0, line);
                 this.order.lineCount++;
-                this.order.processing = false;
             }).catch(error => {
-                this.order.processing = false;
-
                 const { status, data } = error.response;
 
                 if (status === 409) {
                     this.toastr.warning(data.message);
                     this.fetch();
-                    return;
+                } else {
+                    this.errorHandler(error);
                 }
-
-                this.errorHandler(error);
-            });
+            }).finally(() => (this.order.processing = false));;
 
             this.chainRequest(call);
         },
@@ -174,17 +167,22 @@ export default {
             return { ...this.$route.params, product: item.id, service: item.id };
         },
         chainRequest(call) {
-            if (!this.order.promise) {
+            if (this.order.promise) {
+                this.order.promise = this.order.promise.then(call);
+            } else {
                 this.order.promise = call();
-                return;
             }
 
-            this.order.promise = this.order.promise.then(call);
         },
         itemIndex(item) {
             return item.type === this.enums.lineItems.Product
                 ? this.lines.findIndex(({ product }) => product && product.id === item.id)
                 : this.lines.findIndex(({ service }) => service && service.id === item.id);
+        },
+        updateOrder(order) {
+            Object.keys(order)
+                .forEach(attribute => (this.order.form
+                    .field(attribute).value = order[attribute]));
         },
     },
 

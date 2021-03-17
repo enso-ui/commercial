@@ -21,7 +21,7 @@
                     </span>
                     :
                 </template>
-                <order-reservations classes="is-clickable"
+                <reservations classes="is-clickable"
                     :product="line.product"/>
             </span>
         </td>
@@ -30,7 +30,7 @@
                 :class="{'is-danger': errors.has('quantity')}"
                 v-model.number="line.quantity"
                 v-select-on-focus
-                :readonly="fulfilling() || line.processing"
+                :readonly="fulfilled || line.processing"
                 :placeholder="i18n('qty')"
                 @input="errors.clear('quantity'); update()">
             <p class="help is-danger has-text-centered"
@@ -39,16 +39,16 @@
             </p>
         </td>
         <td class="is-numeric"
-            v-if="!order.warehouse">
+            v-if="!fulfilled">
             {{ line.listPrice | numberFormat(2) }}
         </td>
-        <td v-if="!order.warehouse">
+        <td v-if="!fulfilled">
             <p class="control has-icons-right has-text-right">
                 <input class="input is-numeric discount"
                     :class="{'is-danger': errors.has('discountPercent')}"
                     v-model.number="line.discountPercent"
                     v-select-on-focus
-                    :readonly="fulfilling() || line.processing"
+                    :readonly="fulfilled || line.processing"
                     @input="errors.clear('discountPercent'); update()">
                 <span class="icon is-right has-margin-top-small">
                     <fa icon="percentage"
@@ -61,23 +61,23 @@
             </p>
         </td>
         <td class="is-numeric"
-            v-if="!order.warehouse">
+            v-if="!fulfilled">
             {{ line.unitaryPrice | numberFormat(2) }}
         </td>
         <td class="is-numeric price"
-            v-if="!order.warehouse">
+            v-if="!fulfilled">
             {{ line.amount | numberFormat(2) }}
         </td>
         <td class="is-numeric price"
-            v-if="!order.warehouse">
+            v-if="!fulfilled">
             {{ line.vat | numberFormat(2) }}
         </td>
         <td class="has-text-right is-numeric price"
-            v-if="!order.warehouse">
+            v-if="!fulfilled">
             {{ line.total | numberFormat(2) }}
         </td>
         <td class="has-text-centered"
-            v-if="order.warehouse">
+            v-if="fulfilled">
             <div v-if="isProduct">
                 <div class="select"
                     v-if="positionSelector">
@@ -106,7 +106,7 @@
             </div>
         </td>
         <td class="has-text-centered"
-            v-if="order.warehouse">
+            v-if="fulfilled">
             <input class="input position"
                 :class="{'is-danger': errors.has('position') || position && !validPosition}"
                 v-select-on-focus
@@ -125,7 +125,7 @@
         <td class="has-text-centered">
             <a class="button is-naked"
                :class="{'is-loading' : line.processing}"
-               v-if="!fulfilling() || line.quantity === 0"
+               v-if="!fulfilled || line.quantity === 0"
                @click="destroy">
                 <span class="icon is-small">
                     <fa icon="trash-alt"
@@ -134,7 +134,7 @@
             </a>
             <a class="button is-naked"
                 :class="{'is-loading' : line.processing}"
-               v-if="isProduct && !finalized() && order.warehouse && notInStock"
+               v-if="isProduct && !finalized && fulfilled && notInStock"
                v-show="line.positionId"
                @click="insertInStock">
                 <span class="icon is-small"
@@ -145,7 +145,7 @@
             </a>
             <a class="button is-naked"
                :class="{'is-loading' : line.processing}"
-               v-if="isProduct && !finalized() && order.warehouse && !notInStock"
+               v-if="isProduct && !finalized && fulfilled && !notInStock"
                @click="removeFromStock">
                 <span class="icon is-small"
                     :class="{ 'has-text-danger': hasIns() }">
@@ -159,14 +159,14 @@
 
 <script>
 import { mapState } from 'vuex';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { selectOnFocus } from '@enso-ui/directives';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faTrashAlt, faPercentage, faUpload, faDownload, faEnvelope, faHandPaper,
 } from '@fortawesome/free-solid-svg-icons';
 import Errors from '@enso-ui/laravel-validation';
-import OrderReservations from './OrderReservations.vue';
+import Reservations from './Reservations.vue';
 
 library.add(faTrashAlt, faPercentage, faUpload, faDownload, faEnvelope, faHandPaper);
 
@@ -174,14 +174,13 @@ export default {
     name: 'RowLine',
 
     inject: [
-        'i18n', 'route', 'order', 'fulfilling', 'finalized', 'processing',
-        'hasIns', 'hasOuts', 'errorHandler', 'updateOrder', 'version',
-        'chainRequest', 'toastr',
+        'i18n', 'route', 'order', 'processing', 'hasIns', 'hasOuts',
+        'errorHandler', 'version', 'chainRequest', 'toastr',
     ],
 
     directives: { selectOnFocus },
 
-    components: { OrderReservations },
+    components: { Reservations },
 
     props: {
         line: {
@@ -204,6 +203,9 @@ export default {
         isProduct() {
             return this.line.product !== null;
         },
+        form() {
+            return this.order.form;
+        },
         name() {
             return this.isProduct
                 ? this.line.product.name
@@ -222,8 +224,11 @@ export default {
         lines() {
             return this.order.lines;
         },
+        fulfilled() {
+            return this.form.field('status').value === this.enums.orderStatuses.Fulfilled;
+        },
         type() {
-            return this.order.form.param('type');
+            return this.form.param('type');
         },
         validPosition() {
             return this.position.split('-').length === 4
@@ -243,6 +248,9 @@ export default {
             return this.hasIns() && !this.line.inStock
                 || this.hasOuts() && this.line.removedFromStock;
         },
+        finalized() {
+            return this.form.field('status').value === this.enums.orderStatuses.Finalized;
+        },
     },
 
     created() {
@@ -260,10 +268,9 @@ export default {
                 `commercial.${this.type}s.lines.destroy`,
                 { line: this.line.id },
             ), { ...this.line, version: this.version() })
-                .then(({ data }) => {
-                    const { line, order } = data;
+                .then(({ data: { line, order } }) => {
                     this.replace(line);
-                    this.updateOrder(order);
+                    this.$emit('update-order', order);
                 }).catch(error => this.rowError(error, this.reload));
 
             this.chainRequest(call);
@@ -276,9 +283,9 @@ export default {
                     `commercial.${this.type}s.lines.destroy`,
                     { line: this.line.id },
                 ), { params: { version: this.version() } },
-            ).then(({ data }) => {
+            ).then(({ data: { order } }) => {
                 this.lines.splice(this.index, 1);
-                this.updateOrder(data.order);
+                this.$emit('update-order', order);
                 this.order.lineCount--;
             }).catch(error => this.rowError(error, this.reload));
 
@@ -356,7 +363,7 @@ export default {
 
             if (status === 409) {
                 this.toastr.warning(data.message);
-                this.order.form.fetch();
+                this.form.fetch();
                 this.$emit('version-error');
                 return;
             }

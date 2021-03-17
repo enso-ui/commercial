@@ -1,7 +1,10 @@
 <template>
     <order ref="order">
         <template v-slot:controls>
-            <slot name="controls"/>
+            <span class="tag channel is-info is-medium is-bold"
+                v-if="form">
+                {{ enums.saleChannels._get(form.field('channel_id').value) }}
+            </span>
         </template>
         <cancel-invoice :show="order.cancelInvoiceModal"
             @confirm="cancelInvoice"

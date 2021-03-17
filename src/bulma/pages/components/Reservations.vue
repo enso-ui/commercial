@@ -42,7 +42,7 @@ import { faHandPaper, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 library.add(faHandPaper, faPencilAlt);
 
 export default {
-    name: 'OrderReservations',
+    name: 'Reservations',
 
     components: { VPopover, Loader },
 
@@ -68,7 +68,7 @@ export default {
         fetch() {
             this.loading = true;
 
-            axios.get(this.route('inventory.orderReservations', this.product.id))
+            axios.get(this.route('inventory.reservations', this.product.id))
                 .then(({ data }) => {
                     this.reservations = data;
                     this.loading = false;

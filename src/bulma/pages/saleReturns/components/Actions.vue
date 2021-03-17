@@ -7,7 +7,7 @@
                         v-tooltip="i18n('Insert in Stock')"
                         :disabled="processing()"
                         @click="insertInStock"
-                        v-if="order.warehouse && insertable()">
+                        v-if="fulfilled && insertable()">
                         <span class="icon">
                             <fa icon="download"/>
                         </span>
@@ -16,45 +16,40 @@
                         v-tooltip="i18n('Undo Stock Insertion')"
                         :disabled="processing()"
                         @click="undoStockInsertion"
-                        v-if="!finalized() && order.warehouse && someInStock()">
+                        v-if="!finalized && fulfilled && someInStock()">
                         <span class="icon has-text-danger">
                             <fa icon="upload"/>
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="
-                            order.warehouse
-                                ? i18n('Leave Warehouse Mode')
-                                : i18n('Enter Warehouse Mode')
-                        "
+                        v-tooltip="fulfilled
+                            ? i18n('Leave Warehouse Mode')
+                            : i18n('Enter Warehouse Mode')"
                         :disabled="processing()"
-                        @click="order.warehouse = !order.warehouse"
-                        v-if="fulfilling() && allOrdered()">
+                        v-if="fulfilled && allOrdered()">
                         <span class="icon"
                             :class="allInStock() ? 'has-text-success' : 'has-text-danger'">
                             <fa icon="warehouse"/>
                         </span>
                     </button>
                     <button class="button is-naked"
-                        v-tooltip="
-                            fulfilling()
-                                ? i18n('Leave Fulfilling Mode')
-                                : i18n('Enter Fulfilling Mode')
-                        "
-                        :disabled="processing() || someInStock() || order.warehouse"
-                        @click="toggleFulfilling"
+                        v-tooltip="fulfilled
+                            ? i18n('Leave fulfilled Mode')
+                            : i18n('Enter fulfilled Mode')"
+                        :disabled="processing() || someInStock() || fulfilled"
+                        @click="updateFulfilment(fulfilled ? 'cancel' : 'start')"
                         v-if="allOrdered()">
                         <span class="icon"
-                            :class="{'has-text-success': fulfilling()}">
+                            :class="{'has-text-success': fulfilled}">
                             <fa icon="box-open"/>
                         </span>
                     </button>
                     <button class="button is-naked"
-                        :disabled="fulfilling() || processing()"
+                        :disabled="fulfilled || processing()"
                         @click="order.deleteModal = true"
                         v-if="
                             canAccess(`commercial.${type}s.destroy`)
-                            && !fulfilling()
+                            && !fulfilled
                         ">
                         <span class="icon">
                             <fa icon="trash-alt"/>
@@ -63,9 +58,9 @@
                     <button class="button is-naked"
                         :disabled="processing() || !allInStock() || !hasInvoice()"
                         @click="toggleLock"
-                        v-if="fulfilling()">
+                        v-if="fulfilled">
                         <span class="icon">
-                            <fa :icon="finalized() ? 'lock' : 'lock-open'"/>
+                            <fa :icon="finalized ? 'lock' : 'lock-open'"/>
                         </span>
                     </button>
                 </div>
@@ -78,7 +73,7 @@
                         v-tooltip="i18n('Download Goods Received Note')"
                         :disabled="processing()"
                         @click="downloadGrn"
-                        v-if="fulfilling()">
+                        v-if="fulfilled">
                         <span class="icon has-text-info">
                             <fa icon="pallet-alt"/>
                         </span>
@@ -147,6 +142,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { VTooltip } from 'v-tooltip';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -168,14 +164,15 @@ export default {
     directives: { tooltip: VTooltip, longClick },
 
     inject: [
-        'canAccess', 'i18n', 'order', 'email', 'toggleFulfilling', 'toggleLock', 'fulfilling',
-        'allOrdered', 'processing', 'finalized', 'emailedAt', 'emailer', 'insertInStock',
-        'undoStockInsertion', 'allInStock', 'someInStock', 'insertable', 'issueProforma',
-        'issueInvoice', 'hasProforma', 'hasInvoice', 'emailInvoice', 'downloadOffer',
-        'downloadGrn', 'downloadInvoice', 'formatDateTime'
+        'canAccess', 'i18n', 'order', 'email', 'updateFulfilment',
+        'toggleLock', 'allOrdered', 'processing', 'emailedAt',
+        'emailer', 'insertInStock', 'undoStockInsertion', 'allInStock', 'someInStock',
+        'insertable', 'issueProforma', 'issueInvoice', 'hasProforma', 'hasInvoice',
+        'emailInvoice', 'downloadOffer', 'downloadGrn', 'downloadInvoice', 'formatDateTime'
     ],
 
     computed: {
+        ...mapState(['enums']),
         form() {
             return this.order.form;
         },
@@ -190,7 +187,7 @@ export default {
         },
         canCancelInvoice() {
             return this.canAccess(`commercial.${this.type}s.invoices.cancel`)
-                && !this.finalized();
+                && !this.finalized;
         },
         emailTooltip() {
             if (this.invoiceEmailedAt && this.invoiceEmailer) {
@@ -202,6 +199,12 @@ export default {
             return this.emailedAt() && this.emailer()
                 ? `${this.i18n('Order emailed by')} ${this.emailer().person.name} @ ${time}`
                 : null;
+        },
+        fulfilled() {
+            return this.form.field('status').value === this.enums.orderStatuses.Fulfilled;
+        },
+        finalized() {
+            return this.form.field('status').value === this.enums.orderStatuses.Finalized;
         },
     },
 

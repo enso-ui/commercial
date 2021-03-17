@@ -7,10 +7,12 @@
                 v-on="$listeners"
                 source="administration.companies.options"
                 v-model="params.supplierId"
-                @clear="params.mapping=false"/>
-            <vue-switch class="has-padding-large is-larges is-info"
-                v-tooltip="params.mapping ? i18n('Only purchased from') : i18n('Only sold by')"
-                v-model="params.mapping"
+                @clear="params.onlyPurchasedFrom = false"/>
+            <vue-switch class="has-padding-large is-info"
+                v-tooltip="params.onlyPurchasedFrom
+                    ? i18n('Toggle to only sold by')
+                    : i18n('Toggle to only purchased from')"
+                v-model="params.onlyPurchasedFrom"
                 v-if="params.supplierId !== null"/>
         </div>
     </core-select-filter>
